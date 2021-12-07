@@ -1,6 +1,7 @@
 import React from 'react'
 import './App.css'
 import Account from './components/Account'
+import Transaction from './components/Transaction'
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <h1>Account Actions</h1>
       <Account />
       <h1>Transactions</h1>
+      <Transaction />
     </div>
   )
 }

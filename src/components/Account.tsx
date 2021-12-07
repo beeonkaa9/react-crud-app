@@ -23,33 +23,30 @@ const Account = () => {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      given_name: 'Amelia',
-      family_name: 'Earhart',
-      email_address: 'Amelia.Earhart@example.comm',
-      id: '9e28507a-632f-44a6-99a7-98695cf2adcf',
+      given_name: 'Lia',
+      family_name: 'Hart',
+      email_address: 'lia.hart@example.com',
+      id: 'ccc3a91d-449c-41ff-a6fe-d79001431e4f',
       balance: {
-        amount: 100,
+        amount: 500,
         currency: 'USD',
       },
-      note: 'a customer',
+      note: 'a customer example',
     }),
   }
 
-  const postAccount = async () => {
-    await fetch(
-      'https://nestjs-bank-app.herokuapp.com/accounts',
-      postRequestOptions
-    )
+  const postAccount = () => {
+    fetch('https://nestjs-bank-app.herokuapp.com/accounts', postRequestOptions)
   }
 
-  const getAccounts = async () => {
-    await fetch('https://nestjs-bank-app.herokuapp.com/accounts')
+  const getAccounts = () => {
+    fetch('https://nestjs-bank-app.herokuapp.com/accounts')
       .then((response) => response.json())
       .then((data) => setAccounts(data))
   }
 
-  const getAccountById = async () => {
-    await fetch(`https://nestjs-bank-app.herokuapp.com/accounts/${accountId}`)
+  const getAccountById = () => {
+    fetch(`https://nestjs-bank-app.herokuapp.com/accounts/${accountId}`)
       .then((res) => res.json())
       .then((data) => setAccountIdResult(data))
   }
