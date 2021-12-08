@@ -1,7 +1,7 @@
 import React from 'react'
 import './App.css'
-import Account from './components/Account'
-import Transaction from './components/Transaction'
+import Account from './components/account/Account'
+import Transaction from './components/transaction/Transaction'
 
 function App() {
   return (
