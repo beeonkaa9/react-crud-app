@@ -14,7 +14,7 @@ const Account = () => {
 
   return (
     <>
-      <div className="form">
+      <div className="accountForm">
         <form className="accountCreationForm">
           <label>Account id</label>
           <input

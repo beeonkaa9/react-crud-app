@@ -11,3 +11,15 @@ type AccountProps = {
   balance: Balance
   note: string
 }
+
+type TransactionAmount = {
+  amount: number
+  currency: string
+}
+
+type TransactionProps = {
+  id: string
+  note: string
+  target_account_id?: string
+  amount_money: TransactionAmount
+}
