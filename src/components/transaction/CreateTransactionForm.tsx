@@ -10,6 +10,9 @@ const CreateTransactionForm = ({
   const [targetAccount, setTargetAccount] = useState('')
   const [amount, setAmount] = useState({ amount: '', currency: '' })
 
+  const [error, setError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState(null)
+
   const transactionRequestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -42,6 +45,16 @@ const CreateTransactionForm = ({
       `https://nestjs-bank-app.herokuapp.com/accounts/${id}/transactions/add`,
       transactionRequestOptions
     )
+      .then((res) => {
+        if (!res.ok) {
+          setError(true)
+          throw Error(res.statusText)
+        }
+        setError(false)
+      })
+      .catch((e) => {
+        setErrorMessage(e.message)
+      })
   }
 
   const withdrawTransaction = () => {
@@ -49,6 +62,16 @@ const CreateTransactionForm = ({
       `https://nestjs-bank-app.herokuapp.com/accounts/${id}/transactions/withdraw`,
       transactionRequestOptions
     )
+      .then((res) => {
+        if (!res.ok) {
+          setError(true)
+          throw Error(res.statusText)
+        }
+        setError(false)
+      })
+      .catch((e) => {
+        setErrorMessage(e.message)
+      })
   }
 
   const sendMoneyTransaction = () => {
@@ -56,6 +79,16 @@ const CreateTransactionForm = ({
       `https://nestjs-bank-app.herokuapp.com/accounts/${id}/transactions/send`,
       sendMoneyRequestOptions
     )
+      .then((res) => {
+        if (!res.ok) {
+          setError(true)
+          throw Error(res.statusText)
+        }
+        setError(false)
+      })
+      .catch((e) => {
+        setErrorMessage(e.message)
+      })
   }
   return (
     <>
@@ -119,6 +152,8 @@ const CreateTransactionForm = ({
           Transfer from one account to another
         </button>
       ) : null}
+
+      {error ? <div>An error occurred: {errorMessage}</div> : null}
     </>
   )
 }

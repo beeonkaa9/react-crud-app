@@ -13,6 +13,7 @@ const GetAccountId = () => {
           setError(true)
           throw Error(res.statusText)
         }
+        setError(false)
         return res.json()
       })
       .then((data) => setAccountIdResult(data))
@@ -48,22 +49,6 @@ const GetAccountId = () => {
           <div>Note: {accountIdResult?.note}</div>
         </>
       ) : null}
-
-      {/* {accountIdResult ? (
-        <>
-          <div>Id: {accountIdResult?.id}</div>
-          <div>
-            Name: {accountIdResult?.given_name}
-            {accountIdResult?.family_name}
-          </div>
-          <div>Email: {accountIdResult?.email_address}</div>
-          <div>
-            Balance: {accountIdResult?.balance.amount}
-            {accountIdResult?.balance.currency}
-          </div>
-          <div>Note: {accountIdResult?.note}</div>
-        </>
-      ) : null} */}
     </div>
   )
 }

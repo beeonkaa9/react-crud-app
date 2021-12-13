@@ -18,6 +18,7 @@ const GetAllAccounts = () => {
       })
       .then((data) => {
         // setFetchingData(false)
+        setError(false)
         setAccounts(data)
       })
       .catch((e) => {
