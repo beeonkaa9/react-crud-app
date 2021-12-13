@@ -1,12 +1,28 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const GetAllAccounts = () => {
   const [accounts, setAccounts] = useState<Array<AccountProps>>()
+  // const [fetchingData, setFetchingData] = useState(false)
+  const [error, setError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const getAccounts = () => {
+    // setFetchingData(true)
     fetch('https://nestjs-bank-app.herokuapp.com/accounts')
-      .then((response) => response.json())
-      .then((data) => setAccounts(data))
+      .then((res) => {
+        if (!res.ok) {
+          setError(true)
+          throw Error(res.statusText)
+        }
+        return res.json()
+      })
+      .then((data) => {
+        // setFetchingData(false)
+        setAccounts(data)
+      })
+      .catch((e) => {
+        setErrorMessage(e.message)
+      })
   }
 
   return (
@@ -15,21 +31,29 @@ const GetAllAccounts = () => {
         Get all accounts
       </button>
       <div>
-        <h3>Accounts in system</h3>
-        {accounts?.map((account, i) => (
-          <div key={i} className="singleAccount">
-            <div>Id: {account.id}</div>
-            <div>
-              Name: {account.given_name}
-              {account.family_name}
-            </div>
-            <div>Email: {account.email_address}</div>
-            <div>
-              Balance: {account.balance.amount} {account.balance.currency}
-            </div>
-            <div>Note: {account.note}</div>
+        {error ? (
+          <div>
+            An error occurred while getting the accounts: {errorMessage}
           </div>
-        ))}
+        ) : (
+          <div>
+            <h3>Accounts in system</h3>
+            {accounts?.map((account, i) => (
+              <div key={i} className="singleAccount">
+                <div>Id: {account.id}</div>
+                <div>
+                  Name: {account.given_name}
+                  {account.family_name}
+                </div>
+                <div>Email: {account.email_address}</div>
+                <div>
+                  Balance: {account.balance.amount} {account.balance.currency}
+                </div>
+                <div>Note: {account.note}</div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )

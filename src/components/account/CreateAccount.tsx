@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 type InputBalance = {
   amount: string
@@ -22,6 +22,10 @@ const CreateAccount = ({
   balance,
   note,
 }: CreateAccountProps) => {
+  // const [fetchingData, setFetchingData] = useState(false)
+  const [error, setError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState(null)
+
   const postRequestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -39,13 +43,32 @@ const CreateAccount = ({
   }
 
   const postAccount = () => {
+    // setFetchingData(true)
     fetch('https://nestjs-bank-app.herokuapp.com/accounts', postRequestOptions)
+      .then((res) => {
+        if (!res.ok) {
+          setError(true)
+          // setFetchingData(false)
+          throw Error(res.statusText)
+        }
+        setError(false)
+        // setFetchingData(false)
+      })
+      .catch((e) => {
+        setErrorMessage(e.message)
+      })
   }
 
   return (
-    <button className="CreateAccountBtn" onClick={postAccount}>
-      Create Account
-    </button>
+    <>
+      <input
+        type="submit"
+        className="createAccountBtn"
+        onClick={postAccount}
+        value="Create account"
+      ></input>
+      {error ? <h3>{errorMessage}</h3> : null}
+    </>
   )
 }
 
