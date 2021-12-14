@@ -1,19 +1,20 @@
 .App {
   text-align: center;
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  padding-left: 100px;
-  padding-right: 100px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  padding-left: 200px;
+  padding-right: 200px;
+  padding-bottom: 200px;
 }
 .bankLogo {
   height: 200px;
-  width: 1000px;
+  width: 1100px;
 }
 
 button {
   border-radius: 2px;
-  border: 1px solid;
+  border: 1px solid #27405e;
   background-color: #27405e;
-  height: 35px;
+  height: 32px;
   color: white;
 }
 
@@ -22,7 +23,7 @@ label {
 }
 
 button:hover {
-  background-color: lightskyblue;
+  background-color: #3a608f;
   cursor: pointer;
 }
 
@@ -32,6 +33,19 @@ input {
 }
 
 /* styling for account components */
+.AccountSection {
+  /* background-color: #f5e9c741; */
+  background-color: #d1dff33f;
+}
+
+.accountHeader {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: 50px;
+  color: #27405e;
+  padding-top: 30px;
+}
+
 .CreateAccount {
   display: flex;
   flex-direction: column;
@@ -49,33 +63,58 @@ input {
 
 .createAccountBtn {
   border-radius: 2px;
-  border: 1px solid;
+  border: 1px solid #27405e;
   background-color: #27405e;
   height: 40px;
   color: white;
 }
 
 .createAccountBtn:hover {
-  background-color: lightskyblue;
+  background-color: #3a608f;
   cursor: pointer;
 }
 
-.searchAccountsBtns {
-  display: flex;
-  justify-content: space-between;
-  padding: 30px 200px;
-  border-top: 1px solid gray;
-  border-bottom: 1px solid gray;
+.AccountByIdSection {
+  padding-top: 30px;
+  padding-bottom: 60px;
+  border-top: 1px solid lightgray;
+}
+
+.GetAccountsSection {
+  padding-top: 30px;
+  padding-bottom: 60px;
+  border-top: 1px solid lightgray;
 }
 
 .singleAccount {
   padding: 20px;
 }
 
+.DeleteAccount {
+  padding-top: 30px;
+  padding-bottom: 60px;
+  border-top: 1px solid lightgray;
+}
+
 /* styling for transaction components */
+.TransactionSection {
+  /* background-color: #f5e9c741; */
+  background-color: #d1dff33f;
+}
+
+.transactionHeader {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: 50px;
+  color: #27405e;
+  padding-top: 30px;
+}
+
 .transactionBtnRow {
   display: flex;
   justify-content: space-evenly;
+  padding-bottom: 40px;
+  padding-top: 30px;
 }
 
 .TransactionForm {
@@ -93,12 +132,16 @@ input {
   padding-bottom: 20px;
 }
 
-.searchTransactionsRow {
-  display: flex;
-  justify-content: space-between;
-  padding: 30px 200px;
-  border-top: 1px solid gray;
-  border-bottom: 1px solid gray;
+.GetAllTransactionsSection {
+  padding-top: 30px;
+  padding-bottom: 60px;
+  border-top: 1px solid lightgray;
+}
+
+.GetTransactionsIdSection {
+  padding-top: 30px;
+  padding-bottom: 60px;
+  border-top: 1px solid lightgray;
 }
 
 .singleTransaction {

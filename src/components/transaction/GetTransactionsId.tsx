@@ -24,7 +24,7 @@ const GetTransactionsId = () => {
 
   return (
     <>
-      <div>
+      <div className="GetTransactionsIdSection">
         <h3>Search for transactions for an account</h3>
         <input
           type="text"

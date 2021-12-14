@@ -21,7 +21,7 @@ const GetAccountId = () => {
   }
 
   return (
-    <div className="AccountById">
+    <div className="AccountByIdSection">
       <h3>Search for an account</h3>
       <input
         type="text"
@@ -34,7 +34,7 @@ const GetAccountId = () => {
       </button>
 
       {error ? (
-        <h3>An error occurred: {errorMessage}</h3>
+        <div className="error">An error occurred: {errorMessage}</div>
       ) : accountIdResult ? (
         <div className="singleAccount">
           <div>Id: {accountIdResult?.id}</div>

@@ -19,7 +19,7 @@ const GetAllTransactions = () => {
   }
 
   return (
-    <div>
+    <div className="GetAllTransactionsSection">
       <h3>View all transactions</h3>
       <button className="getTransactionsButton" onClick={getTransactions}>
         Get transactions

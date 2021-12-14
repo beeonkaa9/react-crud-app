@@ -7,7 +7,8 @@ const Transaction = () => {
   const [buttonClicked, setButtonClicked] = useState('none')
 
   return (
-    <>
+    <div className="TransactionSection">
+      <h1 className="transactionHeader">Transactions</h1>
       <h2>Create a transaction</h2>
       <div className="transactionBtnRow">
         <button
@@ -28,7 +29,7 @@ const Transaction = () => {
           className="sendMoneyButton"
           onClick={() => setButtonClicked('send')}
         >
-          Transfer from one account to another
+          Transfer money to an account
         </button>
       </div>
 
@@ -36,11 +37,9 @@ const Transaction = () => {
         <CreateTransactionForm buttonClicked={buttonClicked} />
       ) : null}
 
-      <div className="searchTransactionsRow">
-        <GetAllTransactions />
-        <GetTransactionsId />
-      </div>
-    </>
+      <GetAllTransactions />
+      <GetTransactionsId />
+    </div>
   )
 }
 export default Transaction
