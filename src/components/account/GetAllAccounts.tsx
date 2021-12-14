@@ -27,7 +27,8 @@ const GetAllAccounts = () => {
   }
 
   return (
-    <div className="getAccounts">
+    <div className="GetAccounts">
+      <h3>View all accounts</h3>
       <button className="accountGetButton" onClick={getAccounts}>
         Get all accounts
       </button>
@@ -38,13 +39,11 @@ const GetAllAccounts = () => {
           </div>
         ) : (
           <div>
-            <h3>Accounts in system</h3>
             {accounts?.map((account, i) => (
               <div key={i} className="singleAccount">
                 <div>Id: {account.id}</div>
                 <div>
-                  Name: {account.given_name}
-                  {account.family_name}
+                  Name: {account.given_name} {account.family_name}
                 </div>
                 <div>Email: {account.email_address}</div>
                 <div>

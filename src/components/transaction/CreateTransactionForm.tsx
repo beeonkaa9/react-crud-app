@@ -92,13 +92,13 @@ const CreateTransactionForm = ({
   }
   return (
     <>
-      <h2>Create a Transaction</h2>
-      <div className="transactionForm">
+      <div className="TransactionForm">
         <form className="transactionCreationForm">
           <label>Account Id</label>
           <input
             type="text"
             value={id}
+            placeholder="9e28507a-632f-44a6-99a7-98695cf2adcf"
             onChange={(e) => setId(e.target.value)}
           ></input>
 
@@ -106,6 +106,7 @@ const CreateTransactionForm = ({
           <input
             type="text"
             value={note}
+            placeholder="rent money"
             onChange={(e) => setNote(e.target.value)}
           ></input>
           {buttonClicked === 'send' ? (
@@ -114,6 +115,7 @@ const CreateTransactionForm = ({
               <input
                 type="text"
                 value={targetAccount}
+                placeholder="ccc3a91d-449c-41ff-a6fe-d79001431e4f"
                 onChange={(e) => setTargetAccount(e.target.value)}
               ></input>
             </>
@@ -123,6 +125,7 @@ const CreateTransactionForm = ({
           <input
             type="text"
             value={amount.amount}
+            placeholder="300"
             onChange={(e) => setAmount({ ...amount, amount: e.target.value })}
           ></input>
 
@@ -130,28 +133,28 @@ const CreateTransactionForm = ({
           <input
             type="text"
             value={amount.currency}
+            placeholder="USD"
             onChange={(e) => setAmount({ ...amount, currency: e.target.value })}
           ></input>
         </form>
+        {buttonClicked === 'add' ? (
+          <button className="addMoneyButton" onClick={addTransaction}>
+            Add money
+          </button>
+        ) : null}
+
+        {buttonClicked === 'withdraw' ? (
+          <button className="withdrawalButton" onClick={withdrawTransaction}>
+            Make withdrawal
+          </button>
+        ) : null}
+
+        {buttonClicked === 'send' ? (
+          <button className="sendMoneyButton" onClick={sendMoneyTransaction}>
+            Transfer money
+          </button>
+        ) : null}
       </div>
-
-      {buttonClicked === 'add' ? (
-        <button className="addMoneyButton" onClick={addTransaction}>
-          Add money to balance
-        </button>
-      ) : null}
-
-      {buttonClicked === 'withdraw' ? (
-        <button className="withdrawalButton" onClick={withdrawTransaction}>
-          Make a withdrawal
-        </button>
-      ) : null}
-
-      {buttonClicked === 'send' ? (
-        <button className="sendMoneyButton" onClick={sendMoneyTransaction}>
-          Transfer from one account to another
-        </button>
-      ) : null}
 
       {error ? <div>An error occurred: {errorMessage}</div> : null}
     </>

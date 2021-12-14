@@ -21,11 +21,12 @@ const GetAccountId = () => {
   }
 
   return (
-    <div className="accountById">
+    <div className="AccountById">
       <h3>Search for an account</h3>
       <input
         type="text"
         value={accountId}
+        placeholder="9e28507a-632f-44a6-99a7-98695cf2adcf"
         onChange={(e) => setAccountId(e.target.value)}
       ></input>
       <button className="getAccountIdButton" onClick={getAccountById}>
@@ -35,19 +36,18 @@ const GetAccountId = () => {
       {error ? (
         <h3>An error occurred: {errorMessage}</h3>
       ) : accountIdResult ? (
-        <>
+        <div className="singleAccount">
           <div>Id: {accountIdResult?.id}</div>
           <div>
-            Name: {accountIdResult?.given_name}
-            {accountIdResult?.family_name}
+            Name: {accountIdResult?.given_name} {accountIdResult?.family_name}
           </div>
           <div>Email: {accountIdResult?.email_address}</div>
           <div>
-            Balance: {accountIdResult?.balance.amount}
+            Balance: {accountIdResult?.balance.amount}{' '}
             {accountIdResult?.balance.currency}
           </div>
           <div>Note: {accountIdResult?.note}</div>
-        </>
+        </div>
       ) : null}
     </div>
   )

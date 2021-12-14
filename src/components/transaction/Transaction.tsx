@@ -8,34 +8,39 @@ const Transaction = () => {
 
   return (
     <>
-      <button
-        className="addMoneyButton"
-        onClick={() => setButtonClicked('add')}
-      >
-        Add money to balance
-      </button>
+      <h2>Create a transaction</h2>
+      <div className="transactionBtnRow">
+        <button
+          className="addMoneyButton"
+          onClick={() => setButtonClicked('add')}
+        >
+          Add money to balance
+        </button>
 
-      <button
-        className="withdrawalButton"
-        onClick={() => setButtonClicked('withdraw')}
-      >
-        Make a withdrawal
-      </button>
+        <button
+          className="withdrawalButton"
+          onClick={() => setButtonClicked('withdraw')}
+        >
+          Make a withdrawal
+        </button>
 
-      <button
-        className="sendMoneyButton"
-        onClick={() => setButtonClicked('send')}
-      >
-        Transfer from one account to another
-      </button>
+        <button
+          className="sendMoneyButton"
+          onClick={() => setButtonClicked('send')}
+        >
+          Transfer from one account to another
+        </button>
+      </div>
+
       {buttonClicked != 'none' ? (
         <CreateTransactionForm buttonClicked={buttonClicked} />
       ) : null}
 
-      <GetAllTransactions />
-      <GetTransactionsId />
+      <div className="searchTransactionsRow">
+        <GetAllTransactions />
+        <GetTransactionsId />
+      </div>
     </>
   )
 }
-
 export default Transaction

@@ -2,12 +2,13 @@ import React from 'react'
 import './App.css'
 import Account from './components/account/Account'
 import Transaction from './components/transaction/Transaction'
+import BankLogo from './BankLogo.png'
 
 function App() {
   return (
     <div className="App">
       <header className="Header">
-        <h1>Bank Portal</h1>
+        <img src={BankLogo} className="bankLogo" alt="logo" />
       </header>
       <h1>Account Actions</h1>
       <Account />

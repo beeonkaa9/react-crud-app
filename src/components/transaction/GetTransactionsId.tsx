@@ -29,6 +29,7 @@ const GetTransactionsId = () => {
         <input
           type="text"
           value={accountId}
+          placeholder="ccc3a91d-449c-41ff-a6fe-d79001431e4f"
           onChange={(e) => setAccountId(e.target.value)}
         ></input>
         <button
@@ -41,9 +42,8 @@ const GetTransactionsId = () => {
           <div>An error occurred: {errorMessage}</div>
         ) : (
           <div>
-            <h3>Transactions for account</h3>
             {transactionsForId?.map((transaction, i) => (
-              <div key={i}>
+              <div key={i} className="singleTransaction">
                 <div>Id: {transaction.id}</div>
                 <div>Note: {transaction.note}</div>
                 {transaction.target_account_id ? (

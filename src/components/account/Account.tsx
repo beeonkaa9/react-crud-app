@@ -14,12 +14,14 @@ const Account = () => {
 
   return (
     <>
-      <div className="accountForm">
+      <div className="CreateAccount">
+        <h2>Create An Account</h2>
         <form className="accountCreationForm">
           <label>Account id</label>
           <input
             type="text"
             value={id}
+            placeholder="914e8480-263e-4f99-8ce5-6e0a0f3621a7"
             onChange={(e) => setId(e.target.value)}
           ></input>
 
@@ -27,6 +29,7 @@ const Account = () => {
           <input
             type="text"
             value={firstName}
+            placeholder="Jane"
             onChange={(e) => setFirstName(e.target.value)}
           ></input>
 
@@ -34,6 +37,7 @@ const Account = () => {
           <input
             type="text"
             value={lastName}
+            placeholder="Johnson"
             onChange={(e) => setLastName(e.target.value)}
           ></input>
 
@@ -41,14 +45,15 @@ const Account = () => {
           <input
             type="text"
             value={email}
+            placeholder="janejo@mailator.com"
             onChange={(e) => setEmail(e.target.value)}
           ></input>
 
-          <label>Balance</label>
           <label>Amount</label>
           <input
             type="text"
             value={balance.amount}
+            placeholder="400"
             onChange={(e) => setBalance({ ...balance, amount: e.target.value })}
           ></input>
 
@@ -56,6 +61,7 @@ const Account = () => {
           <input
             type="text"
             value={balance.currency}
+            placeholder="USD"
             onChange={(e) =>
               setBalance({ ...balance, currency: e.target.value })
             }
@@ -65,6 +71,7 @@ const Account = () => {
           <input
             type="text"
             value={note}
+            placeholder="a customer"
             onChange={(e) => setNote(e.target.value)}
           ></input>
         </form>
@@ -79,9 +86,10 @@ const Account = () => {
         />
       </div>
 
-      <GetAllAccounts />
-
-      <GetAccountId />
+      <div className="searchAccountsBtns">
+        <GetAccountId />
+        <GetAllAccounts />
+      </div>
     </>
   )
 }

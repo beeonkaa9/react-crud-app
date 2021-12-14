@@ -20,6 +20,7 @@ const GetAllTransactions = () => {
 
   return (
     <div>
+      <h3>View all transactions</h3>
       <button className="getTransactionsButton" onClick={getTransactions}>
         Get transactions
       </button>
@@ -27,9 +28,8 @@ const GetAllTransactions = () => {
         <div>An error occurred: {errorMessage}</div>
       ) : (
         <div>
-          <h3>Transactions in system</h3>
           {transactions?.map((transaction, i) => (
-            <div key={i}>
+            <div key={i} className="singleTransaction">
               <div>Id: {transaction.id}</div>
               <div>Note: {transaction.note}</div>
               {transaction.target_account_id ? (
