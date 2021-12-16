@@ -34,7 +34,6 @@ input {
 
 /* styling for account components */
 .AccountSection {
-  /* background-color: #f5e9c741; */
   background-color: #d1dff33f;
 }
 
@@ -74,6 +73,22 @@ input {
   cursor: pointer;
 }
 
+.formStatus {
+  margin-top: 25px;
+}
+
+.formErrors {
+  color: rgb(189, 48, 48);
+}
+
+.success {
+  color: green;
+}
+
+.error {
+  margin-bottom: 20px;
+}
+
 .AccountByIdSection {
   padding-top: 30px;
   padding-bottom: 60px;
@@ -98,7 +113,6 @@ input {
 
 /* styling for transaction components */
 .TransactionSection {
-  /* background-color: #f5e9c741; */
   background-color: #d1dff33f;
 }
 
@@ -121,7 +135,7 @@ input {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 50px;
+  padding-bottom: 20px;
 }
 
 .transactionCreationForm {
@@ -130,6 +144,10 @@ input {
   justify-content: center;
   width: 260px;
   padding-bottom: 20px;
+}
+
+.transactionFormStatus {
+  margin-bottom: 25px;
 }
 
 .GetAllTransactionsSection {
@@ -142,8 +160,4 @@ input {
   padding-top: 30px;
   padding-bottom: 60px;
   border-top: 1px solid lightgray;
-}
-
-.singleTransaction {
-  padding: 20px;
 }

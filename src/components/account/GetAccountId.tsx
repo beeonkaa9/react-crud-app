@@ -11,13 +11,18 @@ const GetAccountId = () => {
       .then((res) => {
         if (!res.ok) {
           setError(true)
+          console.log('response', res.json())
           throw Error(res.statusText)
         }
         setError(false)
+
         return res.json()
       })
       .then((data) => setAccountIdResult(data))
-      .catch((e) => setErrorMessage(e.message))
+      .catch((e) => {
+        console.log('error', e.json())
+        setErrorMessage(e.message)
+      })
   }
 
   return (
