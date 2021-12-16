@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import validateCreateTransaction from '../../utils/validateCreateTransaction'
 
 const formInitialState = {
@@ -16,6 +16,7 @@ const CreateTransactionForm = ({
 }) => {
   const [formInput, setFormInput] = useState(formInitialState)
   const [isFetchingData, setIsFetchingData] = useState(false)
+  const [isSuccessful, setIsSuccessful] = useState(false)
 
   //error handling
   const [error, setError] = useState(false)
@@ -49,75 +50,21 @@ const CreateTransactionForm = ({
     }),
   }
 
-  const addTransaction = () => {
-    const validateForm = validateCreateTransaction(formInput)
-    const validationErrors = Object.values(validateForm).filter(
-      (error) => error != ''
-    )
-    console.log({ validationErrors })
-    if (validationErrors.length != 0) {
-      setFormErrors(validationErrors)
-      console.log({ formErrors })
-    } else {
-      setIsFetchingData(true)
-      fetch(
-        `https://nestjs-bank-app.herokuapp.com/accounts/${formInput.id}/transactions/add`,
-        transactionRequestOptions
-      )
-        .then((res) => {
-          setIsFetchingData(false)
-          if (!res.ok) {
-            setError(true)
-            throw Error(res.statusText)
-          }
-          setError(false)
-          setFormInput(formInitialState)
-        })
-        .catch((e) => {
-          setErrorMessage(e.message)
-        })
-    }
-  }
+  //since all the transactions share one form, it must be reset before doing another operation
+  useEffect(() => {
+    setFormErrors([''])
+    setFormInput(formInitialState)
+    setError(false)
+    setErrorMessage(null)
+    setIsSuccessful(false)
+  }, [buttonClicked])
 
-  const withdrawTransaction = () => {
-    setIsFetchingData(true)
-    fetch(
-      `https://nestjs-bank-app.herokuapp.com/accounts/${formInput.id}/transactions/withdraw`,
-      transactionRequestOptions
-    )
-      .then((res) => {
-        setIsFetchingData(false)
-        if (!res.ok) {
-          setError(true)
-          throw Error(res.statusText)
-        }
-        setError(false)
-        setFormInput(formInitialState)
-      })
-      .catch((e) => {
-        setErrorMessage(e.message)
-      })
-  }
+  useEffect(() => {
+    if (isSuccessful) setFormErrors([''])
+    setError(false)
+    setErrorMessage(null)
+  }, [isSuccessful])
 
-  const sendMoneyTransaction = () => {
-    setIsFetchingData(true)
-    fetch(
-      `https://nestjs-bank-app.herokuapp.com/accounts/${formInput.id}/transactions/send`,
-      sendMoneyRequestOptions
-    )
-      .then((res) => {
-        setIsFetchingData(false)
-        if (!res.ok) {
-          setError(true)
-          throw Error(res.statusText)
-        }
-        setError(false)
-        setFormInput(formInitialState)
-      })
-      .catch((e) => {
-        setErrorMessage(e.message)
-      })
-  }
   return (
     <>
       <div className="TransactionForm">
@@ -174,30 +121,133 @@ const CreateTransactionForm = ({
           ></input>
         </form>
         {buttonClicked === 'add' ? (
-          <button className="addMoneyButton" onClick={addTransaction}>
+          <button
+            className="addMoneyButton"
+            onClick={() => {
+              const validateForm = validateCreateTransaction(
+                formInput,
+                buttonClicked
+              )
+              const validationErrors = Object.values(validateForm).filter(
+                (error) => error != ''
+              )
+              if (validationErrors.length != 0) {
+                setFormErrors(validationErrors)
+              } else {
+                setIsFetchingData(true)
+                fetch(
+                  `https://nestjs-bank-app.herokuapp.com/accounts/${formInput.id}/transactions/add`,
+                  transactionRequestOptions
+                )
+                  .then((res) => {
+                    setIsFetchingData(false)
+                    if (!res.ok) {
+                      setError(true)
+                      throw Error(res.statusText)
+                    }
+                    setError(false)
+                    setFormInput(formInitialState)
+                    setIsSuccessful(true)
+                  })
+                  .catch((e) => {
+                    setErrorMessage(e.message)
+                  })
+              }
+            }}
+          >
             Add money
           </button>
         ) : null}
 
         {buttonClicked === 'withdraw' ? (
-          <button className="withdrawalButton" onClick={withdrawTransaction}>
+          <button
+            className="withdrawalButton"
+            onClick={() => {
+              const validateForm = validateCreateTransaction(
+                formInput,
+                buttonClicked
+              )
+              const validationErrors = Object.values(validateForm).filter(
+                (error) => error != ''
+              )
+              if (validationErrors.length != 0) {
+                setFormErrors(validationErrors)
+                setIsSuccessful(false)
+              } else {
+                setIsFetchingData(true)
+                fetch(
+                  `https://nestjs-bank-app.herokuapp.com/accounts/${formInput.id}/transactions/withdraw`,
+                  transactionRequestOptions
+                )
+                  .then((res) => {
+                    setIsFetchingData(false)
+                    if (!res.ok) {
+                      setError(true)
+                      setIsSuccessful(false)
+                      throw Error(res.statusText)
+                    }
+                    setError(false)
+                    setFormInput(formInitialState)
+                    setIsSuccessful(true)
+                  })
+                  .catch((e) => {
+                    setErrorMessage(e.message)
+                  })
+              }
+            }}
+          >
             Make withdrawal
           </button>
         ) : null}
 
         {buttonClicked === 'send' ? (
-          <button className="sendMoneyButton" onClick={sendMoneyTransaction}>
+          <button
+            className="sendMoneyButton"
+            onClick={() => {
+              const validateForm = validateCreateTransaction(
+                formInput,
+                buttonClicked
+              )
+              const validationErrors = Object.values(validateForm).filter(
+                (error) => error != ''
+              )
+              if (validationErrors.length != 0) {
+                setFormErrors(validationErrors)
+                setIsSuccessful(false)
+              } else {
+                setIsFetchingData(true)
+                fetch(
+                  `https://nestjs-bank-app.herokuapp.com/accounts/${formInput.id}/transactions/send`,
+                  sendMoneyRequestOptions
+                )
+                  .then((res) => {
+                    setIsFetchingData(false)
+                    if (!res.ok) {
+                      setIsSuccessful(false)
+                      setError(true)
+                      throw Error(res.statusText)
+                    }
+                    setError(false)
+                    setFormInput(formInitialState)
+                    setIsSuccessful(true)
+                  })
+                  .catch((e) => {
+                    setErrorMessage(e.message)
+                  })
+              }
+            }}
+          >
             Transfer money
           </button>
         ) : null}
       </div>
 
       <div className="transactionFormStatus">
+        {/* {isFetchingData ? <div className="loading">Please wait...</div> : null} */}
+        {isFetchingData ? <div className="loading">Please wait...</div> : null}
         {error ? (
           <div className="error">An error occurred: {errorMessage}</div>
         ) : null}
-        {isFetchingData ? <div className="loading">Please wait...</div> : null}
-
         {formErrors ? (
           <>
             {formErrors.map((error, i) => (
@@ -207,7 +257,7 @@ const CreateTransactionForm = ({
             ))}
           </>
         ) : null}
-        {!isFetchingData && formErrors.length === 0 && !error ? (
+        {isSuccessful ? (
           <div className="success">Transaction successfully created!</div>
         ) : null}
       </div>

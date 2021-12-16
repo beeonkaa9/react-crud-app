@@ -1,12 +1,15 @@
 type FormInput = {
   id: string
   note: string
-  targetAccount?: string
+  targetAccount: string
   amount: string
   currency: string
 }
 
-const validateCreateTransaction = (formInput: FormInput) => {
+const validateCreateTransaction = (
+  formInput: FormInput,
+  buttonClicked: string
+) => {
   const errors = {
     id: '',
     note: '',
@@ -15,14 +18,19 @@ const validateCreateTransaction = (formInput: FormInput) => {
     currency: '',
   }
 
-  const uuidValidate =
+  const accountIdValidate =
+    /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi
+  const targetAccountValidate =
     /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi
   const numberValidate = /^[0-9]+$/
   const alphaValidate = /^[a-zA-Z]+$/
 
+  const targetIdTest = targetAccountValidate.test(formInput.targetAccount)
+  console.log({ targetIdTest })
+
   if (!formInput.id) {
     errors.id = 'Account id is required'
-  } else if (!uuidValidate.test(formInput.id)) {
+  } else if (!accountIdValidate.test(formInput.id)) {
     errors.id = 'Account id must be uuid'
   }
 
@@ -30,13 +38,11 @@ const validateCreateTransaction = (formInput: FormInput) => {
     errors.note = 'Note is required'
   }
 
-  if (formInput.id && !formInput.targetAccount) {
-    errors.targetAccount = 'Account id to send money to is required'
-  } else if (
-    formInput.targetAccount &&
-    !uuidValidate.test(formInput.targetAccount)
-  ) {
-    errors.targetAccount = 'Account id to send money to must be uuid'
+  if (buttonClicked === 'send') {
+    if (!formInput.targetAccount)
+      errors.targetAccount = 'Account id to send money to is required'
+    else if (!targetIdTest)
+      errors.targetAccount = 'Account id to send money to must be uuid'
   }
 
   if (!formInput.amount) {
