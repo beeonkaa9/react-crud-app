@@ -12,6 +12,7 @@ const GetAllTransactions = () => {
           setError(true)
           throw Error(res.statusText)
         }
+        console.log('response', res.json())
         return res.json()
       })
       .then((data) => setTransactions(data))
@@ -20,27 +21,30 @@ const GetAllTransactions = () => {
 
   return (
     <div className="GetAllTransactionsSection">
-      <h3>View all transactions</h3>
+      <h2>View all transactions</h2>
       <button className="getTransactionsButton" onClick={getTransactions}>
         Get transactions
       </button>
-      {error ? (
-        <div>An error occurred: {errorMessage}</div>
-      ) : (
-        <div>
-          {transactions?.map((transaction, i) => (
-            <div key={i} className="singleTransaction">
-              <div>Id: {transaction.id}</div>
-              <div>Note: {transaction.note}</div>
-              {transaction.target_account_id ? (
-                <div>Target account: {transaction.target_account_id}</div>
-              ) : null}
-              <div>Amount: {transaction.amount_money.amount}</div>
-              <div>{transaction.amount_money.currency}</div>
-            </div>
-          ))}
-        </div>
-      )}
+      {error ? <div>An error occurred: {errorMessage}</div> : null}
+      <div>
+        {!transactions ? (
+          <h4>No transactions found</h4>
+        ) : (
+          <>
+            {transactions?.map((transaction, i) => (
+              <div key={i} className="singleTransaction">
+                <div>Id: {transaction.id}</div>
+                <div>Note: {transaction.note}</div>
+                {transaction.target_account_id ? (
+                  <div>Target account: {transaction.target_account_id}</div>
+                ) : null}
+                <div>Amount: {transaction.amount_money.amount}</div>
+                <div>{transaction.amount_money.currency}</div>
+              </div>
+            ))}
+          </>
+        )}
+      </div>
     </div>
   )
 }

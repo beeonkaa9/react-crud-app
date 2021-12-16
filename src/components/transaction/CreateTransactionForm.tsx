@@ -243,7 +243,6 @@ const CreateTransactionForm = ({
       </div>
 
       <div className="transactionFormStatus">
-        {/* {isFetchingData ? <div className="loading">Please wait...</div> : null} */}
         {isFetchingData ? <div className="loading">Please wait...</div> : null}
         {error ? (
           <div className="error">An error occurred: {errorMessage}</div>

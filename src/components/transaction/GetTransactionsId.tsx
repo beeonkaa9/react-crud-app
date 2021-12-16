@@ -1,26 +1,15 @@
 import React, { useState } from 'react'
+import validateAccountId from '../../utils/validateAccountId'
 
 const GetTransactionsId = () => {
   const [accountId, setAccountId] = useState('')
   const [transactionsForId, setTransactionsForId] =
     useState<Array<TransactionProps>>()
-  const [error, setError] = useState(false)
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [isFetchingData, setIsFetchingData] = useState(false)
 
-  const getTransactionsById = () => {
-    fetch(
-      `https://nestjs-bank-app.herokuapp.com/accounts/${accountId}/transactions`
-    )
-      .then((res) => {
-        if (!res.ok) {
-          setError(true)
-          throw Error(res.statusText)
-        }
-        return res.json()
-      })
-      .then((data) => setTransactionsForId(data))
-      .catch((e) => setErrorMessage(e.message))
-  }
+  //for errors
+  const [error, setError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   return (
     <>
@@ -34,13 +23,36 @@ const GetTransactionsId = () => {
         ></input>
         <button
           className="getTransactionsAccountBtn"
-          onClick={getTransactionsById}
+          onClick={() => {
+            const validateInput = validateAccountId(accountId)
+            if (validateInput) {
+              setErrorMessage(validateInput)
+              setError(true)
+            } else {
+              setIsFetchingData(true)
+              fetch(
+                `https://nestjs-bank-app.herokuapp.com/accounts/${accountId}/transactions`
+              )
+                .then((res) => {
+                  setIsFetchingData(false)
+                  if (!res.ok) {
+                    setError(true)
+                    throw Error(res.statusText)
+                  }
+                  setError(false)
+                  return res.json()
+                })
+                .then((data) => setTransactionsForId(data))
+                .catch((e) => setErrorMessage(e.message))
+            }
+          }}
         >
           Search
         </button>
+        {isFetchingData ? <div className="loading">Please wait...</div> : null}
         {error ? (
-          <div>An error occurred: {errorMessage}</div>
-        ) : (
+          <div className="error">An error occurred: {errorMessage}</div>
+        ) : transactionsForId ? (
           <div>
             {transactionsForId?.map((transaction, i) => (
               <div key={i} className="singleTransaction">
@@ -54,7 +66,7 @@ const GetTransactionsId = () => {
               </div>
             ))}
           </div>
-        )}
+        ) : null}
       </div>
     </>
   )

@@ -15,6 +15,7 @@ const CreateAccount = () => {
   //for form
   const [formInput, setFormInput] = useState(formInitialState)
   const [isFetchingData, setIsFetchingData] = useState(false)
+  const [isSuccessful, setIsSuccessful] = useState(false)
 
   //error handling
   const [error, setError] = useState(false)
@@ -35,34 +36,6 @@ const CreateAccount = () => {
       },
       note: formInput.note,
     }),
-  }
-
-  const postAccount = () => {
-    const validateForm = validateCreateAccount(formInput)
-    const validationErrors = Object.values(validateForm).filter(
-      (error) => error != ''
-    )
-    if (validationErrors.length != 0) {
-      setFormErrors(validationErrors)
-    } else {
-      setIsFetchingData(true)
-      fetch(
-        'https://nestjs-bank-app.herokuapp.com/accounts',
-        postRequestOptions
-      )
-        .then((res) => {
-          setIsFetchingData(false)
-          if (!res.ok) {
-            setError(true)
-            throw Error(res.statusText)
-          }
-          setError(false)
-          setFormInput(formInitialState)
-        })
-        .catch((e) => {
-          setErrorMessage(e.message)
-        })
-    }
   }
 
   return (
@@ -138,7 +111,36 @@ const CreateAccount = () => {
       <input
         type="submit"
         className="createAccountBtn"
-        onClick={postAccount}
+        onClick={() => {
+          const validateForm = validateCreateAccount(formInput)
+          const validationErrors = Object.values(validateForm).filter(
+            (error) => error != ''
+          )
+          if (validationErrors.length != 0) {
+            setFormErrors(validationErrors)
+            setIsSuccessful(false)
+          } else {
+            setIsFetchingData(true)
+            fetch(
+              'https://nestjs-bank-app.herokuapp.com/accounts',
+              postRequestOptions
+            )
+              .then((res) => {
+                setIsFetchingData(false)
+                if (!res.ok) {
+                  setError(true)
+                  setIsSuccessful(false)
+                  throw Error(res.statusText)
+                }
+                setError(false)
+                setFormInput(formInitialState)
+                setIsSuccessful(true)
+              })
+              .catch((e) => {
+                setErrorMessage(e.message)
+              })
+          }
+        }}
         value="Create account"
       ></input>
       <div className="formStatus">
@@ -156,7 +158,7 @@ const CreateAccount = () => {
             ))}
           </>
         ) : null}
-        {!isFetchingData && formErrors.length === 0 && !error ? (
+        {isSuccessful ? (
           <div className="success">Account successfully created!</div>
         ) : null}
       </div>
