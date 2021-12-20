@@ -13,7 +13,7 @@ const GetTransactionsId = () => {
 
   return (
     <>
-      <div className="GetTransactionsIdSection">
+      <div className="sectionContainer">
         <h3>Search for transactions for an account</h3>
         <input
           type="text"

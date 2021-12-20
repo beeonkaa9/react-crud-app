@@ -27,7 +27,7 @@ const GetAllAccounts = () => {
   }
 
   return (
-    <div className="GetAccountsSection">
+    <div className="sectionContainer">
       <h3>View all accounts</h3>
       <button className="accountGetButton" onClick={getAccounts}>
         Get all accounts

@@ -11,7 +11,7 @@ const DeleteAccount = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   return (
-    <div className="DeleteAccount">
+    <div className="sectionContainer">
       <h3>Delete an account</h3>
       <input
         type="text"

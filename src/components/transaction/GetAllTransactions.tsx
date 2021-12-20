@@ -8,7 +8,7 @@ const GetAllTransactions = () => {
   const [isSuccessful, setIsSuccessful] = useState(false)
 
   return (
-    <div className="GetAllTransactionsSection">
+    <div className="sectionContainer">
       <h2>View all transactions</h2>
       <button
         className="getTransactionsButton"

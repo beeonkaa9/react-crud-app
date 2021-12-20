@@ -120,6 +120,7 @@ const CreateTransactionForm = ({
             }
           ></input>
         </form>
+
         {buttonClicked === 'add' ? (
           <button
             className="addMoneyButton"

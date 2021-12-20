@@ -11,7 +11,7 @@ const GetAccountId = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   return (
-    <div className="AccountByIdSection">
+    <div className="sectionContainer">
       <h3>Search for an account</h3>
       <input
         type="text"

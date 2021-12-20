@@ -1,9 +1,7 @@
 .App {
   text-align: center;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  padding-left: 200px;
-  padding-right: 200px;
-  padding-bottom: 200px;
+  padding: 0 200px 200px 200px;
 }
 .bankLogo {
   height: 200px;
@@ -39,7 +37,7 @@ input {
 
 .accountHeader {
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
-    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    'Lucida Sans Unicode';
   font-size: 50px;
   color: #27405e;
   padding-top: 30px;
@@ -90,13 +88,7 @@ input {
   margin-bottom: 20px;
 }
 
-.AccountByIdSection {
-  padding-top: 30px;
-  padding-bottom: 60px;
-  border-top: 1px solid lightgray;
-}
-
-.GetAccountsSection {
+.sectionContainer {
   padding-top: 30px;
   padding-bottom: 60px;
   border-top: 1px solid lightgray;
@@ -106,12 +98,6 @@ input {
   padding: 20px;
 }
 
-.DeleteAccount {
-  padding-top: 30px;
-  padding-bottom: 60px;
-  border-top: 1px solid lightgray;
-}
-
 /* styling for transaction components */
 .TransactionSection {
   background-color: #d1dff33f;
@@ -119,7 +105,7 @@ input {
 
 .transactionHeader {
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
-    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    'Lucida Sans Unicode';
   font-size: 50px;
   color: #27405e;
   padding-top: 30px;
@@ -149,18 +135,6 @@ input {
 
 .transactionFormStatus {
   margin-bottom: 25px;
-}
-
-.GetAllTransactionsSection {
-  padding-top: 30px;
-  padding-bottom: 60px;
-  border-top: 1px solid lightgray;
-}
-
-.GetTransactionsIdSection {
-  padding-top: 30px;
-  padding-bottom: 60px;
-  border-top: 1px solid lightgray;
 }
 
 .loading {
