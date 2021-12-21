@@ -14,7 +14,7 @@ const GetTransactionsId = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   useEffect(() => {
-    if (requestStatus != 'success') setTransactionsForId([null])
+    if (requestStatus !== 'success') setTransactionsForId([null])
   }, [requestStatus])
 
   return (
@@ -58,7 +58,7 @@ const GetTransactionsId = () => {
         <div className="requestStatus">
           {getRequestStatus(requestStatus, errorMessage)}
         </div>
-        {transactionsForId?.[0] != null ? (
+        {transactionsForId?.[0] !== null ? (
           <div>
             {transactionsForId?.map((transaction, i) => (
               <div key={i} className="singleTransaction">

@@ -33,7 +33,7 @@ const Transaction = () => {
         </button>
       </div>
 
-      {buttonClicked != 'none' ? (
+      {buttonClicked !== 'none' ? (
         <CreateTransactionForm buttonClicked={buttonClicked} />
       ) : null}
 

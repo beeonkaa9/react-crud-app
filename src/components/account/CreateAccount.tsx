@@ -51,7 +51,7 @@ const CreateAccount = () => {
           value={formInput.id || ''}
           placeholder="914e8480-263e-4f99-8ce5-6e0a0f3621a7"
           onChange={(e) => setFormInput({ ...formInput, id: e.target.value })}
-        ></input>
+        />
 
         <label>First name</label>
         <input
@@ -61,7 +61,7 @@ const CreateAccount = () => {
           onChange={(e) =>
             setFormInput({ ...formInput, firstName: e.target.value })
           }
-        ></input>
+        />
 
         <label>Last name</label>
         <input
@@ -71,7 +71,7 @@ const CreateAccount = () => {
           onChange={(e) =>
             setFormInput({ ...formInput, lastName: e.target.value })
           }
-        ></input>
+        />
 
         <label>Email address</label>
         <input
@@ -81,7 +81,7 @@ const CreateAccount = () => {
           onChange={(e) =>
             setFormInput({ ...formInput, email: e.target.value })
           }
-        ></input>
+        />
 
         <label>Amount</label>
         <input
@@ -91,7 +91,7 @@ const CreateAccount = () => {
           onChange={(e) =>
             setFormInput({ ...formInput, amount: e.target.value })
           }
-        ></input>
+        />
 
         <label>Currency</label>
         <input
@@ -101,7 +101,7 @@ const CreateAccount = () => {
           onChange={(e) =>
             setFormInput({ ...formInput, currency: e.target.value })
           }
-        ></input>
+        />
 
         <label>Note</label>
         <input
@@ -109,18 +109,18 @@ const CreateAccount = () => {
           value={formInput.note}
           placeholder="a customer"
           onChange={(e) => setFormInput({ ...formInput, note: e.target.value })}
-        ></input>
+        />
       </form>
 
-      <input
+      <button
         type="submit"
         className="createAccountBtn"
         onClick={() => {
           const validateForm = validateCreateAccount(formInput)
           const validationErrors = Object.values(validateForm).filter(
-            (error) => error != ''
+            (error) => error !== ''
           )
-          if (validationErrors.length != 0) {
+          if (validationErrors.length !== 0) {
             setFormErrors(validationErrors)
             setRequestStatus('validationerror')
           } else {
@@ -143,8 +143,9 @@ const CreateAccount = () => {
               })
           }
         }}
-        value="Create account"
-      ></input>
+      >
+        Create Account
+      </button>
 
       <div className="requestStatus">
         {postDeleteRequestStatus(requestStatus, message, formErrors)}

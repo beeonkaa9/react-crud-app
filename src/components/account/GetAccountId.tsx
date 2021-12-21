@@ -13,7 +13,7 @@ const GetAccountId = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   useEffect(() => {
-    if (requestStatus != 'success') setAccountIdResult(null)
+    if (requestStatus !== 'success') setAccountIdResult(null)
   }, [requestStatus])
 
   return (

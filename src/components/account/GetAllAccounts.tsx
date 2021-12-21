@@ -40,7 +40,7 @@ const GetAllAccounts = () => {
           {getRequestStatus(requestStatus, errorMessage)}
         </div>
         <div>
-          {accounts != undefined && accounts.length === 0 ? (
+          {accounts !== undefined && accounts.length === 0 ? (
             <h4>No accounts found</h4>
           ) : (
             <>

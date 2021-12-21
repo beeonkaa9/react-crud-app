@@ -121,9 +121,9 @@ const CreateTransactionForm = ({
               buttonClicked
             )
             const validationErrors = Object.values(validateForm).filter(
-              (error) => error != ''
+              (error) => error !== ''
             )
-            if (validationErrors.length != 0) {
+            if (validationErrors.length !== 0) {
               setFormErrors(validationErrors)
               setRequestStatus('validationerror')
             } else {
@@ -160,9 +160,9 @@ const CreateTransactionForm = ({
               buttonClicked
             )
             const validationErrors = Object.values(validateForm).filter(
-              (error) => error != ''
+              (error) => error !== ''
             )
-            if (validationErrors.length != 0) {
+            if (validationErrors.length !== 0) {
               setFormErrors(validationErrors)
               setRequestStatus('validationerror')
             } else {
@@ -199,9 +199,9 @@ const CreateTransactionForm = ({
               buttonClicked
             )
             const validationErrors = Object.values(validateForm).filter(
-              (error) => error != ''
+              (error) => error !== ''
             )
-            if (validationErrors.length != 0) {
+            if (validationErrors.length !== 0) {
               setFormErrors(validationErrors)
               setRequestStatus('validationerror')
             } else {
