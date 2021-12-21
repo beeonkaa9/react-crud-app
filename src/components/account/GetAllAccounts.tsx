@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import getRequestStatus from 'utils/getRequestStatus'
 
 const GetAllAccounts = () => {
-  const [accounts, setAccounts] = useState<Array<AccountProps>>()
+  const [accounts, setAccounts] = useState<Array<AccountResponse>>()
 
   const [requestStatus, setRequestStatus] = useState<
     'fetching' | 'error' | 'idle' | 'success'

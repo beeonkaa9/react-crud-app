@@ -3,8 +3,10 @@ import CreateTransactionForm from './CreateTransactionForm'
 import GetAllTransactions from './GetAllTransactions'
 import GetTransactionsId from './GetTransactionsId'
 
+export type TransactionType = 'none' | 'add' | 'withdraw' | 'send'
+
 const Transaction = () => {
-  const [buttonClicked, setButtonClicked] = useState('none')
+  const [buttonClicked, setButtonClicked] = useState<TransactionType>('none')
 
   return (
     <div className="TransactionSection">

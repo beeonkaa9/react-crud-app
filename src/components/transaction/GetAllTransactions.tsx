@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import getRequestStatus from 'utils/getRequestStatus'
 
 const GetAllTransactions = () => {
-  const [transactions, setTransactions] = useState<Array<TransactionProps>>()
+  const [transactions, setTransactions] = useState<Array<TransactionResponse>>()
 
   const [requestStatus, setRequestStatus] = useState<
     'fetching' | 'error' | 'idle' | 'success'

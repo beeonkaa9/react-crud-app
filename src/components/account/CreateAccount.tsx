@@ -13,7 +13,6 @@ const formInitialState = {
 }
 
 const CreateAccount = () => {
-  //for form
   const [formInput, setFormInput] = useState(formInitialState)
 
   const [requestStatus, setRequestStatus] = useState<
@@ -24,22 +23,6 @@ const CreateAccount = () => {
   const [message, setMessage] = useState<string | null>(null)
 
   const [formErrors, setFormErrors] = useState([''])
-
-  const postRequestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      given_name: formInput.firstName,
-      family_name: formInput.lastName,
-      email_address: formInput.email,
-      id: formInput.id,
-      balance: {
-        amount: parseInt(formInput.amount),
-        currency: formInput.currency,
-      },
-      note: formInput.note,
-    }),
-  }
 
   return (
     <div className="CreateAccount">
@@ -125,10 +108,21 @@ const CreateAccount = () => {
             setRequestStatus('validationerror')
           } else {
             setRequestStatus('fetching')
-            fetch(
-              'https://nestjs-bank-app.herokuapp.com/accounts',
-              postRequestOptions
-            )
+            fetch('https://nestjs-bank-app.herokuapp.com/accounts', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                given_name: formInput.firstName,
+                family_name: formInput.lastName,
+                email_address: formInput.email,
+                id: formInput.id,
+                balance: {
+                  amount: parseInt(formInput.amount),
+                  currency: formInput.currency,
+                },
+                note: formInput.note,
+              }),
+            })
               .then((res) => {
                 if (!res.ok) {
                   setRequestStatus('error')

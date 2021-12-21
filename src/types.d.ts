@@ -3,7 +3,7 @@ type Balance = {
   currency: string
 }
 
-type AccountProps = {
+type AccountResponse = {
   id: string
   given_name: string
   family_name: string
@@ -17,7 +17,7 @@ type TransactionAmount = {
   currency: string
 }
 
-type TransactionProps = {
+type TransactionResponse = {
   id: string
   note: string
   target_account_id?: string

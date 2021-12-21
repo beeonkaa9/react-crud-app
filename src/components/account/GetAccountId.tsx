@@ -4,7 +4,8 @@ import validateAccountId from 'utils/validateAccountId'
 
 const GetAccountId = () => {
   const [accountId, setAccountId] = useState('')
-  const [accountIdResult, setAccountIdResult] = useState<AccountProps | null>()
+  const [accountIdResult, setAccountIdResult] =
+    useState<AccountResponse | null>()
 
   const [requestStatus, setRequestStatus] = useState<
     'fetching' | 'error' | 'idle' | 'success'

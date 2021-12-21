@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import postDeleteRequestStatus from 'utils/postDeleteRequestStatus'
 import validateCreateTransaction from 'utils/validateCreateTransaction'
+import { TransactionType } from './Transaction'
 
 const formInitialState = {
   id: '',
@@ -13,7 +14,7 @@ const formInitialState = {
 const CreateTransactionForm = ({
   buttonClicked,
 }: {
-  buttonClicked: string
+  buttonClicked: Exclude<TransactionType, 'none'>
 }) => {
   const [formInput, setFormInput] = useState(formInitialState)
 
@@ -25,33 +26,6 @@ const CreateTransactionForm = ({
   const [message, setMessage] = useState<string | null>(null)
 
   const [formErrors, setFormErrors] = useState([''])
-
-  const transactionRequestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      id: formInput.id,
-      note: formInput.note,
-      amount_money: {
-        amount: parseInt(formInput.amount),
-        currency: formInput.currency,
-      },
-    }),
-  }
-
-  const sendMoneyRequestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      id: formInput.id,
-      note: formInput.note,
-      target_account_id: formInput.targetAccount,
-      amount_money: {
-        amount: parseInt(formInput.amount),
-        currency: formInput.currency,
-      },
-    }),
-  }
 
   //since all the transactions share one form, it must be reset before doing another form (ex. withdraw then add)
   useEffect(() => {
@@ -130,7 +104,18 @@ const CreateTransactionForm = ({
               setRequestStatus('fetching')
               fetch(
                 `https://nestjs-bank-app.herokuapp.com/accounts/${formInput.id}/transactions/add`,
-                transactionRequestOptions
+                {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    id: formInput.id,
+                    note: formInput.note,
+                    amount_money: {
+                      amount: parseInt(formInput.amount),
+                      currency: formInput.currency,
+                    },
+                  }),
+                }
               )
                 .then((res) => {
                   if (!res.ok) {
@@ -169,7 +154,18 @@ const CreateTransactionForm = ({
               setRequestStatus('fetching')
               fetch(
                 `https://nestjs-bank-app.herokuapp.com/accounts/${formInput.id}/transactions/withdraw`,
-                transactionRequestOptions
+                {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    id: formInput.id,
+                    note: formInput.note,
+                    amount_money: {
+                      amount: parseInt(formInput.amount),
+                      currency: formInput.currency,
+                    },
+                  }),
+                }
               )
                 .then((res) => {
                   if (!res.ok) {
@@ -208,7 +204,19 @@ const CreateTransactionForm = ({
               setRequestStatus('fetching')
               fetch(
                 `https://nestjs-bank-app.herokuapp.com/accounts/${formInput.id}/transactions/send`,
-                sendMoneyRequestOptions
+                {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    id: formInput.id,
+                    note: formInput.note,
+                    target_account_id: formInput.targetAccount,
+                    amount_money: {
+                      amount: parseInt(formInput.amount),
+                      currency: formInput.currency,
+                    },
+                  }),
+                }
               )
                 .then((res) => {
                   if (!res.ok) {

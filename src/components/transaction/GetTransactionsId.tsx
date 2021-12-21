@@ -5,7 +5,7 @@ import validateAccountId from 'utils/validateAccountId'
 const GetTransactionsId = () => {
   const [accountId, setAccountId] = useState('')
   const [transactionsForId, setTransactionsForId] =
-    useState<Array<TransactionProps | null>>()
+    useState<Array<TransactionResponse | null>>()
 
   const [requestStatus, setRequestStatus] = useState<
     'fetching' | 'error' | 'idle' | 'success'
