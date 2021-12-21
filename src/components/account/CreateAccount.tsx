@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import postDeleteRequestStatus from '../../utils/postDeleteRequestStatus'
 import validateCreateAccount from '../../utils/validateCreateAccount'
 
 const formInitialState = {
@@ -14,12 +15,14 @@ const formInitialState = {
 const CreateAccount = () => {
   //for form
   const [formInput, setFormInput] = useState(formInitialState)
-  const [isFetchingData, setIsFetchingData] = useState(false)
-  const [isSuccessful, setIsSuccessful] = useState(false)
 
-  //error handling
-  const [error, setError] = useState(false)
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [requestStatus, setRequestStatus] = useState<
+    'fetching' | 'success' | 'error' | 'idle' | 'validationerror'
+  >('idle')
+
+  //for error and success messages
+  const [message, setMessage] = useState<string | null>(null)
+
   const [formErrors, setFormErrors] = useState([''])
 
   const postRequestOptions = {
@@ -108,6 +111,7 @@ const CreateAccount = () => {
           onChange={(e) => setFormInput({ ...formInput, note: e.target.value })}
         ></input>
       </form>
+
       <input
         type="submit"
         className="createAccountBtn"
@@ -118,49 +122,32 @@ const CreateAccount = () => {
           )
           if (validationErrors.length != 0) {
             setFormErrors(validationErrors)
-            setIsSuccessful(false)
+            setRequestStatus('validationerror')
           } else {
-            setIsFetchingData(true)
+            setRequestStatus('fetching')
             fetch(
               'https://nestjs-bank-app.herokuapp.com/accounts',
               postRequestOptions
             )
               .then((res) => {
-                setIsFetchingData(false)
                 if (!res.ok) {
-                  setError(true)
-                  setIsSuccessful(false)
+                  setRequestStatus('error')
                   throw Error(res.statusText)
                 }
-                setError(false)
                 setFormInput(formInitialState)
-                setIsSuccessful(true)
+                setMessage('Account successfully created!')
+                setRequestStatus('success')
               })
               .catch((e) => {
-                setErrorMessage(e.message)
+                setMessage(e.message)
               })
           }
         }}
         value="Create account"
       ></input>
-      <div className="formStatus">
-        {error ? (
-          <div className="error">An error occurred: {errorMessage}</div>
-        ) : null}
-        {isFetchingData ? <div className="loading">Please wait...</div> : null}
 
-        {formErrors ? (
-          <>
-            {formErrors.map((error, i) => (
-              <div key={i} className="formErrors">
-                <div>{error}</div>
-              </div>
-            ))}
-          </>
-        ) : null}
-        {isSuccessful ? (
-          <div className="success">Account successfully created!</div>
-        ) : null}
+      <div className="requestStatus">
+        {postDeleteRequestStatus(requestStatus, message, formErrors)}
       </div>
     </div>
   )

@@ -1,14 +1,20 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import getRequestStatus from '../../utils/getRequestStatus'
 import validateAccountId from '../../utils/validateAccountId'
 
 const GetAccountId = () => {
   const [accountId, setAccountId] = useState('')
-  const [accountIdResult, setAccountIdResult] = useState<AccountProps>()
-  const [isFetchingData, setIsFetchingData] = useState(false)
+  const [accountIdResult, setAccountIdResult] = useState<AccountProps | null>()
 
-  //for errors
-  const [error, setError] = useState(false)
+  const [requestStatus, setRequestStatus] = useState<
+    'fetching' | 'error' | 'idle' | 'success'
+  >('idle')
+
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (requestStatus != 'success') setAccountIdResult(null)
+  }, [requestStatus])
 
   return (
     <div className="sectionContainer">
@@ -25,17 +31,16 @@ const GetAccountId = () => {
           const validateInput = validateAccountId(accountId)
           if (validateInput) {
             setErrorMessage(validateInput)
-            setError(true)
+            setRequestStatus('error')
           } else {
-            setIsFetchingData(true)
+            setRequestStatus('fetching')
             fetch(`https://nestjs-bank-app.herokuapp.com/accounts/${accountId}`)
               .then((res) => {
-                setIsFetchingData(false)
                 if (!res.ok) {
-                  setError(true)
+                  setRequestStatus('error')
                   throw Error(res.statusText)
                 }
-                setError(false)
+                setRequestStatus('success')
                 return res.json()
               })
               .then((data) => setAccountIdResult(data))
@@ -48,10 +53,10 @@ const GetAccountId = () => {
         Search
       </button>
 
-      {isFetchingData ? <div className="loading">Please wait...</div> : null}
-      {error && !isFetchingData ? (
-        <div className="error">An error occurred: {errorMessage}</div>
-      ) : accountIdResult ? (
+      <div className="requestStatus">
+        {getRequestStatus(requestStatus, errorMessage)}
+      </div>
+      {accountIdResult ? (
         <div className="singleAccount">
           <div>Id: {accountIdResult?.id}</div>
           <div>

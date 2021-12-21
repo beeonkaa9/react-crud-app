@@ -1,15 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import getRequestStatus from '../../utils/getRequestStatus'
 import validateAccountId from '../../utils/validateAccountId'
 
 const GetTransactionsId = () => {
   const [accountId, setAccountId] = useState('')
   const [transactionsForId, setTransactionsForId] =
-    useState<Array<TransactionProps>>()
-  const [isFetchingData, setIsFetchingData] = useState(false)
+    useState<Array<TransactionProps | null>>()
 
-  //for errors
-  const [error, setError] = useState(false)
+  const [requestStatus, setRequestStatus] = useState<
+    'fetching' | 'error' | 'idle' | 'success'
+  >('idle')
+
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (requestStatus != 'success') setTransactionsForId([null])
+  }, [requestStatus])
 
   return (
     <>
@@ -27,19 +33,18 @@ const GetTransactionsId = () => {
             const validateInput = validateAccountId(accountId)
             if (validateInput) {
               setErrorMessage(validateInput)
-              setError(true)
+              setRequestStatus('error')
             } else {
-              setIsFetchingData(true)
+              setRequestStatus('fetching')
               fetch(
                 `https://nestjs-bank-app.herokuapp.com/accounts/${accountId}/transactions`
               )
                 .then((res) => {
-                  setIsFetchingData(false)
                   if (!res.ok) {
-                    setError(true)
+                    setRequestStatus('error')
                     throw Error(res.statusText)
                   }
-                  setError(false)
+                  setRequestStatus('success')
                   return res.json()
                 })
                 .then((data) => setTransactionsForId(data))
@@ -49,20 +54,21 @@ const GetTransactionsId = () => {
         >
           Search
         </button>
-        {isFetchingData ? <div className="loading">Please wait...</div> : null}
-        {error ? (
-          <div className="error">An error occurred: {errorMessage}</div>
-        ) : transactionsForId ? (
+
+        <div className="requestStatus">
+          {getRequestStatus(requestStatus, errorMessage)}
+        </div>
+        {transactionsForId?.[0] != null ? (
           <div>
             {transactionsForId?.map((transaction, i) => (
               <div key={i} className="singleTransaction">
-                <div>Id: {transaction.id}</div>
-                <div>Note: {transaction.note}</div>
-                {transaction.target_account_id ? (
+                <div>Id: {transaction?.id}</div>
+                <div>Note: {transaction?.note}</div>
+                {transaction?.target_account_id ? (
                   <div>Target account: {transaction.target_account_id}</div>
                 ) : null}
-                <div>Amount: {transaction.amount_money.amount}</div>
-                <div>{transaction.amount_money.currency}</div>
+                <div>Amount: {transaction?.amount_money.amount}</div>
+                <div>{transaction?.amount_money.currency}</div>
               </div>
             ))}
           </div>

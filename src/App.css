@@ -71,7 +71,7 @@ input {
   cursor: pointer;
 }
 
-.formStatus {
+.requestStatus {
   margin-top: 25px;
 }
 
@@ -95,7 +95,7 @@ input {
 }
 
 .singleAccount {
-  padding: 20px;
+  margin-top: 25px;
 }
 
 /* styling for transaction components */
@@ -134,7 +134,11 @@ input {
 }
 
 .transactionFormStatus {
-  margin-bottom: 25px;
+  margin: 25px 0 25px 0;
+}
+
+.singleTransaction {
+  margin-top: 25px;
 }
 
 .loading {

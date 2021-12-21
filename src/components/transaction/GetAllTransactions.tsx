@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
+import getRequestStatus from '../../utils/getRequestStatus'
 
 const GetAllTransactions = () => {
   const [transactions, setTransactions] = useState<Array<TransactionProps>>()
-  const [error, setError] = useState(false)
+
+  const [requestStatus, setRequestStatus] = useState<
+    'fetching' | 'error' | 'idle' | 'success'
+  >('idle')
+
   const [errorMessage, setErrorMessage] = useState(null)
-  const [isFetchingData, setIsFetchingData] = useState(false)
-  const [isSuccessful, setIsSuccessful] = useState(false)
 
   return (
     <div className="sectionContainer">
@@ -13,17 +16,14 @@ const GetAllTransactions = () => {
       <button
         className="getTransactionsButton"
         onClick={() => {
-          setIsFetchingData(true)
+          setRequestStatus('fetching')
           fetch('https://nestjs-bank-app.herokuapp.com/transactions')
             .then((res) => {
-              setIsFetchingData(false)
               if (!res.ok) {
-                setIsSuccessful(false)
-                setError(true)
+                setRequestStatus('error')
                 throw Error(res.statusText)
               }
-              setIsSuccessful(true)
-              setError(false)
+              setRequestStatus('success')
               return res.json()
             })
             .then((data) => setTransactions(data))
@@ -32,10 +32,11 @@ const GetAllTransactions = () => {
       >
         Get transactions
       </button>
-      {isFetchingData ? <div className="loading">Please wait...</div> : null}
-      {error ? <div>An error occurred: {errorMessage}</div> : null}
+      <div className="requestStatus">
+        {getRequestStatus(requestStatus, errorMessage)}
+      </div>
       <div>
-        {transactions && isSuccessful ? (
+        {transactions && requestStatus === 'success' ? (
           <>
             {transactions?.map((transaction, i) => (
               <div key={i} className="singleTransaction">
@@ -50,7 +51,7 @@ const GetAllTransactions = () => {
             ))}
           </>
         ) : null}
-        {transactions?.length === 0 && isSuccessful ? (
+        {transactions?.length === 0 && requestStatus === 'success' ? (
           <h4>No transactions found</h4>
         ) : null}
       </div>

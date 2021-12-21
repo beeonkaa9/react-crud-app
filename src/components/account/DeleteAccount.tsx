@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
+import postDeleteRequestStatus from '../../utils/postDeleteRequestStatus'
 import validateAccountId from '../../utils/validateAccountId'
 
 const DeleteAccount = () => {
   const [accountId, setAccountId] = useState('')
-  const [isFetchingData, setIsFetchingData] = useState(false)
-  const [isSuccessful, setIsSuccessful] = useState(false)
 
-  //errors
-  const [error, setError] = useState(false)
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  //for error and success messages
+  const [message, setMessage] = useState<string | null>(null)
+
+  const [requestStatus, setRequestStatus] = useState<
+    'fetching' | 'success' | 'error' | 'idle' | 'validationerror'
+  >('idle')
 
   return (
     <div className="sectionContainer">
@@ -24,11 +26,10 @@ const DeleteAccount = () => {
         onClick={() => {
           const validateInput = validateAccountId(accountId)
           if (validateInput) {
-            setErrorMessage(validateInput)
-            setError(true)
-            setIsSuccessful(false)
+            setMessage(validateInput)
+            setRequestStatus('error')
           } else {
-            setIsFetchingData(true)
+            setRequestStatus('fetching')
             fetch(
               `https://nestjs-bank-app.herokuapp.com/accounts/${accountId}`,
               {
@@ -36,17 +37,15 @@ const DeleteAccount = () => {
               }
             )
               .then((res) => {
-                setIsFetchingData(false)
                 if (!res.ok) {
-                  setError(true)
-                  setIsSuccessful(false)
+                  setRequestStatus('error')
                   throw Error(res.statusText)
                 }
-                setIsSuccessful(true)
-                setError(false)
+                setRequestStatus('success')
+                setMessage('Deletion successful!')
               })
               .catch((e) => {
-                setErrorMessage(e.message)
+                setMessage(e.message)
               })
           }
         }}
@@ -54,13 +53,9 @@ const DeleteAccount = () => {
         Delete account
       </button>
 
-      {isFetchingData ? <div className="loading">Please wait...</div> : null}
-      {error && !isFetchingData ? (
-        <div className="error"> An error occurred: {errorMessage}</div>
-      ) : null}
-      {!error && !isFetchingData && isSuccessful ? (
-        <div className="success">Deletion successful!</div>
-      ) : null}
+      <div className="requestStatus">
+        {postDeleteRequestStatus(requestStatus, message)}
+      </div>
     </div>
   )
 }

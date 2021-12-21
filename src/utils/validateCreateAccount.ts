@@ -65,7 +65,7 @@ const validateCreateAccount = (formInput: FormInput) => {
   }
 
   if (!formInput.note) {
-    errors.currency = 'Note is required'
+    errors.note = 'Note is required'
   }
 
   return errors
