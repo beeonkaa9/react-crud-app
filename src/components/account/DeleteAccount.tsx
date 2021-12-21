@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import postDeleteRequestStatus from '../../utils/postDeleteRequestStatus'
-import validateAccountId from '../../utils/validateAccountId'
+import postDeleteRequestStatus from 'utils/postDeleteRequestStatus'
+import validateAccountId from 'utils/validateAccountId'
 
 const DeleteAccount = () => {
   const [accountId, setAccountId] = useState('')

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import postDeleteRequestStatus from '../../utils/postDeleteRequestStatus'
-import validateCreateTransaction from '../../utils/validateCreateTransaction'
+import postDeleteRequestStatus from 'utils/postDeleteRequestStatus'
+import validateCreateTransaction from 'utils/validateCreateTransaction'
 
 const formInitialState = {
   id: '',

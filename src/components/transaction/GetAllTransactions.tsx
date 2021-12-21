@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import getRequestStatus from '../../utils/getRequestStatus'
+import getRequestStatus from 'utils/getRequestStatus'
 
 const GetAllTransactions = () => {
   const [transactions, setTransactions] = useState<Array<TransactionProps>>()

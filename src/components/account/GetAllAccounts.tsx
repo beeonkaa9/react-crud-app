@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import getRequestStatus from '../../utils/getRequestStatus'
+import getRequestStatus from 'utils/getRequestStatus'
 
 const GetAllAccounts = () => {
   const [accounts, setAccounts] = useState<Array<AccountProps>>()

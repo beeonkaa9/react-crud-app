@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import getRequestStatus from '../../utils/getRequestStatus'
-import validateAccountId from '../../utils/validateAccountId'
+import getRequestStatus from 'utils/getRequestStatus'
+import validateAccountId from 'utils/validateAccountId'
 
 const GetTransactionsId = () => {
   const [accountId, setAccountId] = useState('')
