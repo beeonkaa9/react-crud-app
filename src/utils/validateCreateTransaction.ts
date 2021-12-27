@@ -6,6 +6,13 @@ type FormInput = {
   currency: string
 }
 
+const accountIdValidate =
+  /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi
+const targetAccountValidate =
+  /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi
+const numberValidate = /^[0-9]+$/
+const alphaValidate = /^[a-zA-Z]+$/
+
 const validateCreateTransaction = (
   formInput: FormInput,
   buttonClicked: string
@@ -17,16 +24,6 @@ const validateCreateTransaction = (
     amount: '',
     currency: '',
   }
-
-  const accountIdValidate =
-    /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi
-  const targetAccountValidate =
-    /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi
-  const numberValidate = /^[0-9]+$/
-  const alphaValidate = /^[a-zA-Z]+$/
-
-  const targetIdTest = targetAccountValidate.test(formInput.targetAccount)
-  console.log({ targetIdTest })
 
   if (!formInput.id) {
     errors.id = 'Account id is required'
@@ -41,7 +38,7 @@ const validateCreateTransaction = (
   if (buttonClicked === 'send') {
     if (!formInput.targetAccount)
       errors.targetAccount = 'Account id to send money to is required'
-    else if (!targetIdTest)
+    else if (!targetAccountValidate.test(formInput.targetAccount))
       errors.targetAccount = 'Account id to send money to must be uuid'
   }
 

@@ -8,25 +8,25 @@ type FormInput = {
   note: string
 }
 
+const errors = {
+  id: '',
+  firstName: '',
+  lastName: '',
+  email: '',
+  amount: '',
+  currency: '',
+  note: '',
+}
+
+const uuidValidate =
+  /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi
+
+const nameValidate = /^(?=.{1,50}$)[a-z]+(?:['_.\s][a-z]+)*$/i
+const emailValidate = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+const numberValidate = /^[0-9]+$/
+const alphaValidate = /^[a-zA-Z]+$/
+
 const validateCreateAccount = (formInput: FormInput) => {
-  const errors = {
-    id: '',
-    firstName: '',
-    lastName: '',
-    email: '',
-    amount: '',
-    currency: '',
-    note: '',
-  }
-
-  const uuidValidate =
-    /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi
-
-  const nameValidate = /^(?=.{1,50}$)[a-z]+(?:['_.\s][a-z]+)*$/i
-  const emailValidate = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
-  const numberValidate = /^[0-9]+$/
-  const alphaValidate = /^[a-zA-Z]+$/
-
   if (!formInput.id) {
     errors.id = 'Account id is required'
   } else if (!uuidValidate.test(formInput.id)) {
