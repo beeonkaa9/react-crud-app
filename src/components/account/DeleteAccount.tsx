@@ -1,5 +1,5 @@
+import RequestStatus from 'components/RequestStatus'
 import React, { useState } from 'react'
-import postDeleteRequestStatus from 'utils/postDeleteRequestStatus'
 import validateAccountId from 'utils/validateAccountId'
 
 const DeleteAccount = () => {
@@ -8,9 +8,8 @@ const DeleteAccount = () => {
   //for error and success messages
   const [message, setMessage] = useState<string | null>(null)
 
-  const [requestStatus, setRequestStatus] = useState<
-    'fetching' | 'success' | 'error' | 'idle' | 'validationerror'
-  >('idle')
+  const [requestStatus, setRequestStatus] =
+    useState<RequestStatusOptions>('idle')
 
   return (
     <div className="sectionContainer">
@@ -54,7 +53,7 @@ const DeleteAccount = () => {
       </button>
 
       <div className="requestStatus">
-        {postDeleteRequestStatus(requestStatus, message)}
+        <RequestStatus requestStatus={requestStatus} message={message} />
       </div>
     </div>
   )

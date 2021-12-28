@@ -7,9 +7,8 @@ const GetAccountId = () => {
   const [accountIdResult, setAccountIdResult] =
     useState<AccountResponse | null>()
 
-  const [requestStatus, setRequestStatus] = useState<
-    'fetching' | 'error' | 'idle' | 'success'
-  >('idle')
+  const [requestStatus, setRequestStatus] =
+    useState<RequestStatusOptions>('idle')
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 

@@ -7,9 +7,8 @@ const GetTransactionsId = () => {
   const [transactionsForId, setTransactionsForId] =
     useState<Array<TransactionResponse | null>>()
 
-  const [requestStatus, setRequestStatus] = useState<
-    'fetching' | 'error' | 'idle' | 'success'
-  >('idle')
+  const [requestStatus, setRequestStatus] =
+    useState<RequestStatusOptions>('idle')
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 

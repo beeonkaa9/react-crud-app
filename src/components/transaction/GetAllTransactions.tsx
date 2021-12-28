@@ -1,12 +1,11 @@
+import RequestStatus from 'components/RequestStatus'
 import React, { useState } from 'react'
-import getRequestStatus from 'utils/getRequestStatus'
 
 const GetAllTransactions = () => {
   const [transactions, setTransactions] = useState<Array<TransactionResponse>>()
 
-  const [requestStatus, setRequestStatus] = useState<
-    'fetching' | 'error' | 'idle' | 'success'
-  >('idle')
+  const [requestStatus, setRequestStatus] =
+    useState<RequestStatusOptions>('idle')
 
   const [errorMessage, setErrorMessage] = useState(null)
 
@@ -33,7 +32,9 @@ const GetAllTransactions = () => {
         Get transactions
       </button>
       <div className="requestStatus">
-        {getRequestStatus(requestStatus, errorMessage)}
+        {requestStatus === 'fetching' || requestStatus === 'error' ? (
+          <RequestStatus requestStatus={requestStatus} message={errorMessage} />
+        ) : null}
       </div>
       <div>
         {transactions && requestStatus === 'success'
