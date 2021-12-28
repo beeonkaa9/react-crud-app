@@ -241,9 +241,8 @@ const CreateTransactionForm = ({
 
       <div className="transactionFormStatus">
         <RequestStatus
-          requestStatus={requestStatus}
-          message={message}
-          validationErrors={formValidationErrors}
+          request={{ status: requestStatus, message: message }}
+          formStatus={formValidationErrors}
         />
       </div>
     </div>

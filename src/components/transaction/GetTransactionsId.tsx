@@ -57,8 +57,7 @@ const GetTransactionsId = () => {
         <div className="requestStatus">
           {requestStatus === 'fetching' || requestStatus === 'error' ? (
             <RequestStatus
-              requestStatus={requestStatus}
-              message={errorMessage}
+              request={{ status: requestStatus, message: errorMessage }}
             />
           ) : null}
         </div>

@@ -107,7 +107,7 @@ const CreateAccount = () => {
           if (validationErrors.length !== 0) {
             setFormValidationErrors(validationErrors)
           } else {
-            setFormValidationErrors([''])
+            setFormValidationErrors(null)
             setRequestStatus('fetching')
             fetch('https://nestjs-bank-app.herokuapp.com/accounts', {
               method: 'POST',
@@ -145,9 +145,8 @@ const CreateAccount = () => {
 
       <div className="requestStatus">
         <RequestStatus
-          requestStatus={requestStatus}
-          message={message}
-          validationErrors={formValidationErrors}
+          request={{ status: requestStatus, message: message }}
+          formStatus={formValidationErrors}
         />
       </div>
     </div>

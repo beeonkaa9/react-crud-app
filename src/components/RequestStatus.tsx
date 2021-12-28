@@ -1,19 +1,17 @@
 import React from 'react'
 type RequestStatusProps = {
-  requestStatus: RequestStatusOptions
-  message?: string | null
-  validationErrors?: string[] | null
+  request: {
+    status: RequestStatusOptions
+    message?: string | null
+  }
+  formStatus?: string[] | null
 }
 
-const RequestStatus = ({
-  requestStatus,
-  message,
-  validationErrors,
-}: RequestStatusProps) => {
-  if (validationErrors !== null && validationErrors !== undefined) {
+const RequestStatus = ({ request, formStatus }: RequestStatusProps) => {
+  if (formStatus !== null && formStatus !== undefined) {
     return (
       <>
-        {validationErrors?.map((error, i) => (
+        {formStatus?.map((error, i) => (
           <div key={i} className="formErrors">
             <div>{error}</div>
           </div>
@@ -25,9 +23,9 @@ const RequestStatus = ({
   return {
     idle: null,
     fetching: <div className="loading">Please wait...</div>,
-    success: <div className="success">{message}</div>,
-    error: <div className="error">An error occurred: {message}</div>,
-  }[requestStatus]
+    success: <div className="success">{request.message}</div>,
+    error: <div className="error">An error occurred: {request.message}</div>,
+  }[request.status]
 }
 
 export default RequestStatus

@@ -55,7 +55,9 @@ const GetAccountId = () => {
 
       <div className="requestStatus">
         {requestStatus === 'fetching' || requestStatus === 'error' ? (
-          <RequestStatus requestStatus={requestStatus} message={errorMessage} />
+          <RequestStatus
+            request={{ status: requestStatus, message: errorMessage }}
+          />
         ) : null}
       </div>
       {accountIdResult ? (

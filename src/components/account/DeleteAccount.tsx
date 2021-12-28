@@ -53,7 +53,7 @@ const DeleteAccount = () => {
       </button>
 
       <div className="requestStatus">
-        <RequestStatus requestStatus={requestStatus} message={message} />
+        <RequestStatus request={{ status: requestStatus, message: message }} />
       </div>
     </div>
   )
