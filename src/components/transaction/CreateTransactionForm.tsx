@@ -1,5 +1,5 @@
+import RequestStatus from 'components/RequestStatus'
 import React, { useEffect, useState } from 'react'
-import postDeleteRequestStatus from 'utils/postDeleteRequestStatus'
 import validateCreateTransaction from 'utils/validateCreateTransaction'
 import { TransactionType } from './Transaction'
 
@@ -18,19 +18,21 @@ const CreateTransactionForm = ({
 }) => {
   const [formInput, setFormInput] = useState(formInitialState)
 
-  const [requestStatus, setRequestStatus] = useState<
-    'fetching' | 'success' | 'error' | 'idle' | 'validationerror'
-  >('idle')
+  const [requestStatus, setRequestStatus] =
+    useState<RequestStatusOptions>('idle')
 
   //for error and success messages
   const [message, setMessage] = useState<string | null>(null)
 
-  const [formErrors, setFormErrors] = useState([''])
+  const [formValidationErrors, setFormValidationErrors] = useState<
+    string[] | null
+  >(null)
 
   //since all the transactions share one form, it must be reset before doing another form (ex. withdraw then add)
   useEffect(() => {
     setFormInput(formInitialState)
     setRequestStatus('idle')
+    setFormValidationErrors(null)
   }, [buttonClicked])
 
   return (
@@ -98,9 +100,9 @@ const CreateTransactionForm = ({
               (error) => error !== ''
             )
             if (validationErrors.length !== 0) {
-              setFormErrors(validationErrors)
-              setRequestStatus('validationerror')
+              setFormValidationErrors(validationErrors)
             } else {
+              setFormValidationErrors(null)
               setRequestStatus('fetching')
               fetch(
                 `https://nestjs-bank-app.herokuapp.com/accounts/${formInput.id}/transactions/add`,
@@ -148,9 +150,9 @@ const CreateTransactionForm = ({
               (error) => error !== ''
             )
             if (validationErrors.length !== 0) {
-              setFormErrors(validationErrors)
-              setRequestStatus('validationerror')
+              setFormValidationErrors(validationErrors)
             } else {
+              setFormValidationErrors(null)
               setRequestStatus('fetching')
               fetch(
                 `https://nestjs-bank-app.herokuapp.com/accounts/${formInput.id}/transactions/withdraw`,
@@ -198,9 +200,9 @@ const CreateTransactionForm = ({
               (error) => error !== ''
             )
             if (validationErrors.length !== 0) {
-              setFormErrors(validationErrors)
-              setRequestStatus('validationerror')
+              setFormValidationErrors(validationErrors)
             } else {
+              setFormValidationErrors(null)
               setRequestStatus('fetching')
               fetch(
                 `https://nestjs-bank-app.herokuapp.com/accounts/${formInput.id}/transactions/send`,
@@ -238,7 +240,11 @@ const CreateTransactionForm = ({
       ) : null}
 
       <div className="transactionFormStatus">
-        {postDeleteRequestStatus(requestStatus, message, formErrors)}
+        <RequestStatus
+          requestStatus={requestStatus}
+          message={message}
+          validationErrors={formValidationErrors}
+        />
       </div>
     </div>
   )

@@ -76,7 +76,6 @@ const validateCreateAccount = (formInput: FormInput) => {
     errors.note = 'Note is required'
   }
 
-  console.log({ errors })
   return errors
 }
 

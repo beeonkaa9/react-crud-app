@@ -1,5 +1,5 @@
+import RequestStatus from 'components/RequestStatus'
 import React, { useState } from 'react'
-import postDeleteRequestStatus from 'utils/postDeleteRequestStatus'
 import validateCreateAccount from 'utils/validateCreateAccount'
 
 const formInitialState = {
@@ -15,14 +15,15 @@ const formInitialState = {
 const CreateAccount = () => {
   const [formInput, setFormInput] = useState(formInitialState)
 
-  const [requestStatus, setRequestStatus] = useState<
-    'fetching' | 'success' | 'error' | 'idle' | 'validationerror'
-  >('idle')
+  const [requestStatus, setRequestStatus] =
+    useState<RequestStatusOptions>('idle')
 
   //for error and success messages
   const [message, setMessage] = useState<string | null>(null)
 
-  const [formErrors, setFormErrors] = useState([''])
+  const [formValidationErrors, setFormValidationErrors] = useState<
+    string[] | null
+  >(null)
 
   return (
     <div className="CreateAccount">
@@ -104,9 +105,9 @@ const CreateAccount = () => {
             (error) => error !== ''
           )
           if (validationErrors.length !== 0) {
-            setFormErrors(validationErrors)
-            setRequestStatus('validationerror')
+            setFormValidationErrors(validationErrors)
           } else {
+            setFormValidationErrors([''])
             setRequestStatus('fetching')
             fetch('https://nestjs-bank-app.herokuapp.com/accounts', {
               method: 'POST',
@@ -124,6 +125,7 @@ const CreateAccount = () => {
               }),
             })
               .then((res) => {
+                setFormValidationErrors(null)
                 if (!res.ok) {
                   setRequestStatus('error')
                   throw Error(res.statusText)
@@ -142,7 +144,11 @@ const CreateAccount = () => {
       </button>
 
       <div className="requestStatus">
-        {postDeleteRequestStatus(requestStatus, message, formErrors)}
+        <RequestStatus
+          requestStatus={requestStatus}
+          message={message}
+          validationErrors={formValidationErrors}
+        />
       </div>
     </div>
   )

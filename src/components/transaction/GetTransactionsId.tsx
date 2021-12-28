@@ -1,5 +1,5 @@
+import RequestStatus from 'components/RequestStatus'
 import React, { useEffect, useState } from 'react'
-import getRequestStatus from 'utils/getRequestStatus'
 import validateAccountId from 'utils/validateAccountId'
 
 const GetTransactionsId = () => {
@@ -56,7 +56,12 @@ const GetTransactionsId = () => {
         </button>
 
         <div className="requestStatus">
-          {getRequestStatus(requestStatus, errorMessage)}
+          {requestStatus === 'fetching' || requestStatus === 'error' ? (
+            <RequestStatus
+              requestStatus={requestStatus}
+              message={errorMessage}
+            />
+          ) : null}
         </div>
         {transactionsForId?.[0] !== null ? (
           <div>

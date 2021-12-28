@@ -1,5 +1,5 @@
+import RequestStatus from 'components/RequestStatus'
 import React, { useEffect, useState } from 'react'
-import getRequestStatus from 'utils/getRequestStatus'
 import validateAccountId from 'utils/validateAccountId'
 
 const GetAccountId = () => {
@@ -55,7 +55,9 @@ const GetAccountId = () => {
       </button>
 
       <div className="requestStatus">
-        {getRequestStatus(requestStatus, errorMessage)}
+        {requestStatus === 'fetching' || requestStatus === 'error' ? (
+          <RequestStatus requestStatus={requestStatus} message={errorMessage} />
+        ) : null}
       </div>
       {accountIdResult ? (
         <div className="singleAccount">
