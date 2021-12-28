@@ -4,14 +4,14 @@ type RequestStatusProps = {
     status: RequestStatusOptions
     message?: string | null
   }
-  formStatus?: string[] | null
+  validationErrors?: string[] | null
 }
 
-const RequestStatus = ({ request, formStatus }: RequestStatusProps) => {
-  if (formStatus !== null && formStatus !== undefined) {
+const FormStatus = ({ request, validationErrors }: RequestStatusProps) => {
+  if (validationErrors !== null && validationErrors !== undefined) {
     return (
       <>
-        {formStatus?.map((error, i) => (
+        {validationErrors?.map((error, i) => (
           <div key={i} className="formErrors">
             <div>{error}</div>
           </div>
@@ -28,4 +28,4 @@ const RequestStatus = ({ request, formStatus }: RequestStatusProps) => {
   }[request.status]
 }
 
-export default RequestStatus
+export default FormStatus

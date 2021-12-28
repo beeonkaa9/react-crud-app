@@ -1,4 +1,4 @@
-import RequestStatus from 'components/RequestStatus'
+import FormStatus from 'components/FormStatus'
 import React, { useState } from 'react'
 import validateAccountId from 'utils/validateAccountId'
 
@@ -52,7 +52,7 @@ const DeleteAccount = () => {
       </button>
 
       <div className="requestStatus">
-        <RequestStatus request={{ status: requestStatus, message: message }} />
+        <FormStatus request={{ status: requestStatus, message }} />
       </div>
     </div>
   )

@@ -1,4 +1,4 @@
-import RequestStatus from 'components/RequestStatus'
+import FormStatus from 'components/FormStatus'
 import React, { useEffect, useState } from 'react'
 import validateAccountId from 'utils/validateAccountId'
 
@@ -54,7 +54,7 @@ const GetAccountId = () => {
 
       <div className="requestStatus">
         {requestStatus === 'fetching' || requestStatus === 'error' ? (
-          <RequestStatus
+          <FormStatus
             request={{ status: requestStatus, message: errorMessage }}
           />
         ) : null}

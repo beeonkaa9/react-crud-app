@@ -1,4 +1,4 @@
-import RequestStatus from 'components/RequestStatus'
+import FormStatus from 'components/FormStatus'
 import React, { useState } from 'react'
 
 const GetAllTransactions = () => {
@@ -32,7 +32,7 @@ const GetAllTransactions = () => {
       </button>
       <div className="requestStatus">
         {requestStatus === 'fetching' || requestStatus === 'error' ? (
-          <RequestStatus
+          <FormStatus
             request={{ status: requestStatus, message: errorMessage }}
           />
         ) : null}

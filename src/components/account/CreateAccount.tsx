@@ -1,4 +1,4 @@
-import RequestStatus from 'components/RequestStatus'
+import FormStatus from 'components/FormStatus'
 import React, { useState } from 'react'
 import validateCreateAccount from 'utils/validateCreateAccount'
 
@@ -144,9 +144,9 @@ const CreateAccount = () => {
       </button>
 
       <div className="requestStatus">
-        <RequestStatus
-          request={{ status: requestStatus, message: message }}
-          formStatus={formValidationErrors}
+        <FormStatus
+          request={{ status: requestStatus, message }}
+          validationErrors={formValidationErrors}
         />
       </div>
     </div>

@@ -1,4 +1,4 @@
-import RequestStatus from 'components/RequestStatus'
+import FormStatus from 'components/FormStatus'
 import React, { useEffect, useState } from 'react'
 import validateCreateTransaction from 'utils/validateCreateTransaction'
 import { TransactionType } from './Transaction'
@@ -237,9 +237,9 @@ const CreateTransactionForm = ({
       ) : null}
 
       <div className="transactionFormStatus">
-        <RequestStatus
-          request={{ status: requestStatus, message: message }}
-          formStatus={formValidationErrors}
+        <FormStatus
+          request={{ status: requestStatus, message }}
+          validationErrors={formValidationErrors}
         />
       </div>
     </div>
