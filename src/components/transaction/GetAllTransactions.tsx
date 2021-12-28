@@ -36,9 +36,8 @@ const GetAllTransactions = () => {
         {getRequestStatus(requestStatus, errorMessage)}
       </div>
       <div>
-        {transactions && requestStatus === 'success' ? (
-          <>
-            {transactions?.map((transaction, i) => (
+        {transactions && requestStatus === 'success'
+          ? transactions?.map((transaction, i) => (
               <div key={i} className="singleTransaction">
                 <div>Id: {transaction.id}</div>
                 <div>Note: {transaction.note}</div>
@@ -48,9 +47,8 @@ const GetAllTransactions = () => {
                 <div>Amount: {transaction.amount_money.amount}</div>
                 <div>{transaction.amount_money.currency}</div>
               </div>
-            ))}
-          </>
-        ) : null}
+            ))
+          : null}
         {transactions?.length === 0 && requestStatus === 'success' ? (
           <h4>No transactions found</h4>
         ) : null}

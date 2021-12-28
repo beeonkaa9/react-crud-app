@@ -43,21 +43,19 @@ const GetAllAccounts = () => {
           {accounts !== undefined && accounts.length === 0 ? (
             <h4>No accounts found</h4>
           ) : (
-            <>
-              {accounts?.map((account, i) => (
-                <div key={i} className="singleAccount">
-                  <div>Id: {account.id}</div>
-                  <div>
-                    Name: {account.given_name} {account.family_name}
-                  </div>
-                  <div>Email: {account.email_address}</div>
-                  <div>
-                    Balance: {account.balance.amount} {account.balance.currency}
-                  </div>
-                  <div>Note: {account.note}</div>
+            accounts?.map((account, i) => (
+              <div key={i} className="singleAccount">
+                <div>Id: {account.id}</div>
+                <div>
+                  Name: {account.given_name} {account.family_name}
                 </div>
-              ))}
-            </>
+                <div>Email: {account.email_address}</div>
+                <div>
+                  Balance: {account.balance.amount} {account.balance.currency}
+                </div>
+                <div>Note: {account.note}</div>
+              </div>
+            ))
           )}
         </div>
       </div>
