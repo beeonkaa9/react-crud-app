@@ -13,24 +13,15 @@ const Transaction = () => {
       <h1 className="transactionHeader">Transactions</h1>
       <h2>Create a transaction</h2>
       <div className="transactionBtnRow">
-        <button
-          className="addMoneyButton"
-          onClick={() => setButtonClicked('add')}
-        >
+        <button onClick={() => setButtonClicked('add')}>
           Add money to balance
         </button>
 
-        <button
-          className="withdrawalButton"
-          onClick={() => setButtonClicked('withdraw')}
-        >
+        <button onClick={() => setButtonClicked('withdraw')}>
           Make a withdrawal
         </button>
 
-        <button
-          className="sendMoneyButton"
-          onClick={() => setButtonClicked('send')}
-        >
+        <button onClick={() => setButtonClicked('send')}>
           Transfer money to an account
         </button>
       </div>

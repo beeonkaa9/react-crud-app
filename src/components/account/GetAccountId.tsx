@@ -26,7 +26,6 @@ const GetAccountId = () => {
         onChange={(e) => setAccountId(e.target.value)}
       ></input>
       <button
-        className="getAccountIdButton"
         onClick={() => {
           const validateInput = validateAccountId(accountId)
           if (validateInput) {

@@ -90,7 +90,6 @@ const CreateTransactionForm = ({
 
       {buttonClicked === 'add' ? (
         <button
-          className="addMoneyButton"
           onClick={() => {
             const validateForm = validateCreateTransaction(
               formInput,
@@ -140,7 +139,6 @@ const CreateTransactionForm = ({
 
       {buttonClicked === 'withdraw' ? (
         <button
-          className="withdrawalButton"
           onClick={() => {
             const validateForm = validateCreateTransaction(
               formInput,
@@ -190,7 +188,6 @@ const CreateTransactionForm = ({
 
       {buttonClicked === 'send' ? (
         <button
-          className="sendMoneyButton"
           onClick={() => {
             const validateForm = validateCreateTransaction(
               formInput,

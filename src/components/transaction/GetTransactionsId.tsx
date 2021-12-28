@@ -27,7 +27,6 @@ const GetTransactionsId = () => {
           onChange={(e) => setAccountId(e.target.value)}
         ></input>
         <button
-          className="getTransactionsAccountBtn"
           onClick={() => {
             const validateInput = validateAccountId(accountId)
             if (validateInput) {

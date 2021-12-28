@@ -21,7 +21,6 @@ const DeleteAccount = () => {
         onChange={(e) => setAccountId(e.target.value)}
       ></input>
       <button
-        className="deleteAccountBtn"
         onClick={() => {
           const validateInput = validateAccountId(accountId)
           if (validateInput) {

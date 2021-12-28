@@ -13,7 +13,6 @@ const GetAllTransactions = () => {
     <div className="sectionContainer">
       <h2>View all transactions</h2>
       <button
-        className="getTransactionsButton"
         onClick={() => {
           setRequestStatus('fetching')
           fetch('https://nestjs-bank-app.herokuapp.com/transactions')

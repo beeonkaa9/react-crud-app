@@ -31,9 +31,7 @@ const GetAllAccounts = () => {
   return (
     <div className="sectionContainer">
       <h3>View all accounts</h3>
-      <button className="accountGetButton" onClick={getAccounts}>
-        Get all accounts
-      </button>
+      <button onClick={getAccounts}>Get all accounts</button>
       <div>
         <div className="requestStatus">
           {requestStatus === 'fetching' || requestStatus === 'error' ? (
