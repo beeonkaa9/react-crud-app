@@ -8,59 +8,67 @@ type FormInput = {
   note: string
 }
 
-const errors = {
-  id: '',
-  firstName: '',
-  lastName: '',
-  email: '',
-  amount: '',
-  currency: '',
-  note: '',
-}
-
-const uuidValidate =
-  /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi
-
-const nameValidate = /^(?=.{1,50}$)[a-z]+(?:['_.\s][a-z]+)*$/i
-const emailValidate = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
-const numberValidate = /^[0-9]+$/
-const alphaValidate = /^[a-zA-Z]+$/
-
 const validateCreateAccount = (formInput: FormInput) => {
+  const errors = {
+    id: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    amount: '',
+    currency: '',
+    note: '',
+  }
+
   if (!formInput.id) {
     errors.id = 'Account id is required'
-  } else if (!uuidValidate.test(formInput.id)) {
+  } else if (
+    !new RegExp(
+      /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi
+    ).test(formInput.id)
+  ) {
     errors.id = 'Account id must be uuid'
   }
 
   if (!formInput.firstName) {
     errors.firstName = 'First name is required'
-  } else if (!nameValidate.test(formInput.firstName)) {
+  } else if (
+    !new RegExp(/^(?=.{1,50}$)[a-z]+(?:['_.\s][a-z]+)*$/i).test(
+      formInput.firstName
+    )
+  ) {
     errors.firstName =
       'First name can only contain letters, spaces, and hyphens'
   }
 
   if (!formInput.lastName) {
     errors.lastName = 'Last name is required'
-  } else if (!nameValidate.test(formInput.lastName)) {
+  } else if (
+    !new RegExp(/^(?=.{1,50}$)[a-z]+(?:['_.\s][a-z]+)*$/i).test(
+      formInput.lastName
+    )
+  ) {
     errors.lastName = 'Last name can only contain letters, spaces, and hyphens'
   }
 
   if (!formInput.email) {
     errors.email = 'Email is required'
-  } else if (!emailValidate.test(formInput.email)) {
+  } else if (
+    !new RegExp(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/).test(
+      formInput.email
+    )
+  ) {
     errors.email = 'Email is invalid'
   }
 
   if (!formInput.amount) {
     errors.amount = 'Amount is required'
-  } else if (!numberValidate.test(formInput.amount)) {
+  } else if (!new RegExp(/^[0-9]+$/).test(formInput.amount)) {
     errors.amount = 'Amount must be a number and greater than 0'
   }
 
   if (!formInput.currency) {
     errors.currency = 'Currency is required'
-  } else if (!alphaValidate.test(formInput.currency)) {
+  } else if (!new RegExp(/^[a-zA-Z]+$/).test(formInput.currency)) {
     errors.currency = 'Currency may only contain alphabetic characters'
   }
 
@@ -68,6 +76,7 @@ const validateCreateAccount = (formInput: FormInput) => {
     errors.note = 'Note is required'
   }
 
+  console.log({ errors })
   return errors
 }
 
