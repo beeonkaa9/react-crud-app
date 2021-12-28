@@ -61,16 +61,16 @@ const GetAccountId = () => {
       </div>
       {accountIdResult ? (
         <div className="singleAccount">
-          <div>Id: {accountIdResult?.id}</div>
+          <div>Id: {accountIdResult.id}</div>
           <div>
-            Name: {accountIdResult?.given_name} {accountIdResult?.family_name}
+            Name: {accountIdResult.given_name} {accountIdResult?.family_name}
           </div>
-          <div>Email: {accountIdResult?.email_address}</div>
+          <div>Email: {accountIdResult.email_address}</div>
           <div>
-            Balance: {accountIdResult?.balance.amount}{' '}
-            {accountIdResult?.balance.currency}
+            Balance: {accountIdResult.balance.amount}{' '}
+            {accountIdResult.balance.currency}
           </div>
-          <div>Note: {accountIdResult?.note}</div>
+          <div>Note: {accountIdResult.note}</div>
         </div>
       ) : null}
     </div>
