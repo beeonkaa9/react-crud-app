@@ -1,38 +1,146 @@
 .App {
   text-align: center;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  padding: 0 200px 200px 200px;
+}
+.bankLogo {
+  height: 200px;
+  width: 1100px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+button {
+  border-radius: 2px;
+  border: 1px solid #27405e;
+  background-color: #27405e;
+  height: 32px;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+label {
+  padding-top: 15px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+button:hover {
+  background-color: #3a608f;
+  cursor: pointer;
+}
+
+input {
+  height: 25px;
+  width: 250px;
+}
+
+/* styling for account components */
+.AccountSection {
+  background-color: #d1dff33f;
+}
+
+.accountHeader {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+    'Lucida Sans Unicode';
+  font-size: 50px;
+  color: #27405e;
+  padding-top: 30px;
+}
+
+.CreateAccount {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 50px;
+  align-items: center;
+}
+
+.accountCreationForm {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 260px;
+  padding-bottom: 20px;
+}
+
+.createAccountBtn {
+  border-radius: 2px;
+  border: 1px solid #27405e;
+  background-color: #27405e;
+  height: 40px;
+  color: white;
+}
+
+.createAccountBtn:hover {
+  background-color: #3a608f;
+  cursor: pointer;
+}
+
+.requestStatus {
+  margin-top: 25px;
+}
+
+.formErrors {
+  color: rgb(189, 48, 48);
+}
+
+.success {
+  color: green;
+}
+
+.error {
+  color: rgb(189, 48, 48);
+  margin-bottom: 20px;
+}
+
+.sectionContainer {
+  padding-top: 30px;
+  padding-bottom: 60px;
+  border-top: 1px solid lightgray;
+}
+
+.singleAccount {
+  margin-top: 25px;
+}
+
+/* styling for transaction components */
+.TransactionSection {
+  background-color: #d1dff33f;
+}
+
+.transactionHeader {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+    'Lucida Sans Unicode';
+  font-size: 50px;
+  color: #27405e;
+  padding-top: 30px;
+}
+
+.transactionBtnRow {
+  display: flex;
+  justify-content: space-evenly;
+  padding-bottom: 40px;
+  padding-top: 30px;
+}
+
+.TransactionForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 20px;
+}
+
+.transactionCreationForm {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 260px;
+  padding-bottom: 20px;
+}
+
+.transactionFormStatus {
+  margin: 25px 0 25px 0;
+}
+
+.singleTransaction {
+  margin-top: 25px;
+}
+
+.loading {
+  font-weight: 15px;
 }
