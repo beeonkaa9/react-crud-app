@@ -21,9 +21,9 @@
 
 a {
   color: white;
-  font-size: x-large;
+  font-size: 23px;
   text-decoration: none;
-  padding: 0 80px;
+  padding: 0 40px;
 }
 
 button {
@@ -48,6 +48,10 @@ input {
   width: 250px;
 }
 
+.PageSection {
+  background-color: #d1dff33f;
+}
+
 .sectionHeader {
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
     'Lucida Sans Unicode';
@@ -57,10 +61,6 @@ input {
 }
 
 /* styling for account components */
-.PageSection {
-  background-color: #d1dff33f;
-}
-
 .CreateAccount {
   display: flex;
   flex-direction: column;
