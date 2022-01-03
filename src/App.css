@@ -3,9 +3,27 @@
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   padding: 0 200px 200px 200px;
 }
+
+.Header {
+  background-color: #253d5a;
+  display: flex;
+  height: 100px;
+}
+
 .bankLogo {
-  height: 200px;
-  width: 1100px;
+  width: 500px;
+}
+
+.NavLinks {
+  display: flex;
+  padding-top: 30px;
+}
+
+a {
+  color: white;
+  font-size: 23px;
+  text-decoration: none;
+  padding: 0 40px;
 }
 
 button {
@@ -30,12 +48,11 @@ input {
   width: 250px;
 }
 
-/* styling for account components */
-.AccountSection {
+.PageSection {
   background-color: #d1dff33f;
 }
 
-.accountHeader {
+.sectionHeader {
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
     'Lucida Sans Unicode';
   font-size: 50px;
@@ -43,6 +60,7 @@ input {
   padding-top: 30px;
 }
 
+/* styling for account components */
 .CreateAccount {
   display: flex;
   flex-direction: column;
@@ -99,18 +117,6 @@ input {
 }
 
 /* styling for transaction components */
-.TransactionSection {
-  background-color: #d1dff33f;
-}
-
-.transactionHeader {
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
-    'Lucida Sans Unicode';
-  font-size: 50px;
-  color: #27405e;
-  padding-top: 30px;
-}
-
 .transactionBtnRow {
   display: flex;
   justify-content: space-evenly;
@@ -139,6 +145,11 @@ input {
 
 .singleTransaction {
   margin-top: 25px;
+}
+
+/*About page*/
+.aboutSection {
+  padding-bottom: 50px;
 }
 
 .loading {

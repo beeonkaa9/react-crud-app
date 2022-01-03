@@ -9,8 +9,8 @@ const Transaction = () => {
   const [buttonClicked, setButtonClicked] = useState<TransactionType>('none')
 
   return (
-    <div className="TransactionSection">
-      <h1 className="transactionHeader">Transactions</h1>
+    <div className="PageSection">
+      <h1 className="sectionHeader">Transactions</h1>
       <h2>Create a transaction</h2>
       <div className="transactionBtnRow">
         <button onClick={() => setButtonClicked('add')}>

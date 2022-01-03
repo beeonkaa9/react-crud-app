@@ -6,8 +6,8 @@ import GetAllAccounts from './GetAllAccounts'
 
 const Account = () => {
   return (
-    <div className="AccountSection">
-      <h1 className="accountHeader">Account Actions</h1>
+    <div className="PageSection">
+      <h1 className="sectionHeader">Account Actions</h1>
       <CreateAccount />
       <GetAccountId />
       <GetAllAccounts />
