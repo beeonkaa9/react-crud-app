@@ -1,6 +1,7 @@
 import FormStatus from 'components/FormStatus'
 import React, { useState } from 'react'
 import validateCreateAccount from 'utils/validateCreateAccount'
+import ky, { HTTPError } from 'ky'
 
 const formInitialState = {
   id: '',
@@ -109,10 +110,8 @@ const CreateAccount = () => {
           } else {
             setFormValidationErrors(null)
             setRequestStatus('fetching')
-            fetch('https://nestjs-bank-app.herokuapp.com/accounts', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
+            ky.post('https://nestjs-bank-app.herokuapp.com/accounts', {
+              json: {
                 given_name: formInput.firstName,
                 family_name: formInput.lastName,
                 email_address: formInput.email,
@@ -122,19 +121,20 @@ const CreateAccount = () => {
                   currency: formInput.currency,
                 },
                 note: formInput.note,
-              }),
+              },
             })
-              .then((res) => {
-                setFormValidationErrors(null)
-                if (!res.ok) {
-                  setRequestStatus('error')
-                  throw Error(res.statusText)
-                }
+              //201 HTTP code results in 'unexpected end of JSON input' error, so it must be text
+              .text()
+              .then(() => {
+                setRequestStatus('success')
                 setFormInput(formInitialState)
                 setMessage('Account successfully created!')
-                setRequestStatus('success')
               })
               .catch((e) => {
+                setRequestStatus('error')
+                if (e instanceof HTTPError) {
+                  e.response.json().then((e) => setMessage(e.message))
+                }
                 setMessage(e.message)
               })
           }

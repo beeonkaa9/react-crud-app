@@ -1,4 +1,5 @@
 import FormStatus from 'components/FormStatus'
+import ky, { HTTPError } from 'ky'
 import React, { useEffect, useState } from 'react'
 import validateAccountId from 'utils/validateAccountId'
 
@@ -34,19 +35,21 @@ const GetTransactionsId = () => {
               setRequestStatus('error')
             } else {
               setRequestStatus('fetching')
-              fetch(
+              ky.get(
                 `https://nestjs-bank-app.herokuapp.com/accounts/${accountId}/transactions`
               )
-                .then((res) => {
-                  if (!res.ok) {
-                    setRequestStatus('error')
-                    throw Error(res.statusText)
-                  }
+                .json<Array<TransactionResponse>>()
+                .then((data) => {
+                  setTransactionsForId(data)
                   setRequestStatus('success')
-                  return res.json()
                 })
-                .then((data) => setTransactionsForId(data))
-                .catch((e) => setErrorMessage(e.message))
+                .catch((e) => {
+                  setRequestStatus('error')
+                  if (e instanceof HTTPError) {
+                    e.response.json().then((e) => setErrorMessage(e.message))
+                  }
+                  setErrorMessage(e.message)
+                })
             }
           }}
         >

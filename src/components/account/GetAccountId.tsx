@@ -1,4 +1,5 @@
 import FormStatus from 'components/FormStatus'
+import ky, { HTTPError } from 'ky'
 import React, { useEffect, useState } from 'react'
 import validateAccountId from 'utils/validateAccountId'
 
@@ -33,17 +34,19 @@ const GetAccountId = () => {
             setRequestStatus('error')
           } else {
             setRequestStatus('fetching')
-            fetch(`https://nestjs-bank-app.herokuapp.com/accounts/${accountId}`)
-              .then((res) => {
-                if (!res.ok) {
-                  setRequestStatus('error')
-                  throw Error(res.statusText)
-                }
+            ky.get(
+              `https://nestjs-bank-app.herokuapp.com/accounts/${accountId}`
+            )
+              .json<AccountResponse>()
+              .then((data) => {
+                setAccountIdResult(data)
                 setRequestStatus('success')
-                return res.json()
               })
-              .then((data) => setAccountIdResult(data))
               .catch((e) => {
+                setRequestStatus('error')
+                if (e instanceof HTTPError) {
+                  e.response.json().then((e) => setErrorMessage(e.message))
+                }
                 setErrorMessage(e.message)
               })
           }

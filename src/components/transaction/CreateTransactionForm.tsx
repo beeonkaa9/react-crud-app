@@ -1,4 +1,5 @@
 import FormStatus from 'components/FormStatus'
+import ky, { HTTPError } from 'ky'
 import React, { useEffect, useState } from 'react'
 import validateCreateTransaction from 'utils/validateCreateTransaction'
 import { TransactionType } from './Transaction'
@@ -103,31 +104,31 @@ const CreateTransactionForm = ({
             } else {
               setFormValidationErrors(null)
               setRequestStatus('fetching')
-              fetch(
+              ky.post(
                 `https://nestjs-bank-app.herokuapp.com/accounts/${formInput.id}/transactions/add`,
                 {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
+                  json: {
                     id: formInput.id,
                     note: formInput.note,
                     amount_money: {
                       amount: parseInt(formInput.amount),
                       currency: formInput.currency,
                     },
-                  }),
+                  },
                 }
               )
-                .then((res) => {
-                  if (!res.ok) {
-                    setRequestStatus('error')
-                    throw Error(res.statusText)
-                  }
+                //201 HTTP code results in 'unexpected end of JSON input' error, so it must be text
+                .text()
+                .then(() => {
+                  setRequestStatus('success')
                   setFormInput(formInitialState)
                   setMessage('Transaction successfully submitted!')
-                  setRequestStatus('success')
                 })
                 .catch((e) => {
+                  setRequestStatus('error')
+                  if (e instanceof HTTPError) {
+                    e.response.json().then((e) => setMessage(e.message))
+                  }
                   setMessage(e.message)
                 })
             }
@@ -152,31 +153,31 @@ const CreateTransactionForm = ({
             } else {
               setFormValidationErrors(null)
               setRequestStatus('fetching')
-              fetch(
+              ky.post(
                 `https://nestjs-bank-app.herokuapp.com/accounts/${formInput.id}/transactions/withdraw`,
                 {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
+                  json: {
                     id: formInput.id,
                     note: formInput.note,
                     amount_money: {
                       amount: parseInt(formInput.amount),
                       currency: formInput.currency,
                     },
-                  }),
+                  },
                 }
               )
-                .then((res) => {
-                  if (!res.ok) {
-                    setRequestStatus('error')
-                    throw Error(res.statusText)
-                  }
+                //201 HTTP code results in 'unexpected end of JSON input' error, so it must be text
+                .text()
+                .then(() => {
+                  setRequestStatus('success')
                   setFormInput(formInitialState)
                   setMessage('Transaction successfully submitted!')
-                  setRequestStatus('success')
                 })
                 .catch((e) => {
+                  setRequestStatus('error')
+                  if (e instanceof HTTPError) {
+                    e.response.json().then((e) => setMessage(e.message))
+                  }
                   setMessage(e.message)
                 })
             }
@@ -201,12 +202,10 @@ const CreateTransactionForm = ({
             } else {
               setFormValidationErrors(null)
               setRequestStatus('fetching')
-              fetch(
+              ky.post(
                 `https://nestjs-bank-app.herokuapp.com/accounts/${formInput.id}/transactions/send`,
                 {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
+                  json: {
                     id: formInput.id,
                     note: formInput.note,
                     target_account_id: formInput.targetAccount,
@@ -214,19 +213,21 @@ const CreateTransactionForm = ({
                       amount: parseInt(formInput.amount),
                       currency: formInput.currency,
                     },
-                  }),
+                  },
                 }
               )
-                .then((res) => {
-                  if (!res.ok) {
-                    setRequestStatus('error')
-                    throw Error(res.statusText)
-                  }
+                //201 HTTP code results in 'unexpected end of JSON input' error, so it must be text
+                .text()
+                .then(() => {
+                  setRequestStatus('success')
                   setFormInput(formInitialState)
                   setMessage('Transaction successfully submitted!')
-                  setRequestStatus('success')
                 })
                 .catch((e) => {
+                  setRequestStatus('error')
+                  if (e instanceof HTTPError) {
+                    e.response.json().then((e) => setMessage(e.message))
+                  }
                   setMessage(e.message)
                 })
             }

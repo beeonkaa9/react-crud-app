@@ -1,4 +1,5 @@
 import FormStatus from 'components/FormStatus'
+import ky, { HTTPError } from 'ky'
 import React, { useState } from 'react'
 
 const GetAllAccounts = () => {
@@ -11,19 +12,17 @@ const GetAllAccounts = () => {
 
   const getAccounts = () => {
     setRequestStatus('fetching')
-    fetch('https://nestjs-bank-app.herokuapp.com/accounts')
-      .then((res) => {
-        if (!res.ok) {
-          setRequestStatus('error')
-          throw Error(res.statusText)
-        }
-        setRequestStatus('success')
-        return res.json()
-      })
+    ky.get('https://nestjs-bank-app.herokuapp.com/accounts')
+      .json<Array<AccountResponse>>()
       .then((data) => {
         setAccounts(data)
+        setRequestStatus('success')
       })
       .catch((e) => {
+        setRequestStatus('error')
+        if (e instanceof HTTPError) {
+          e.response.json().then((e) => setErrorMessage(e.message))
+        }
         setErrorMessage(e.message)
       })
   }
