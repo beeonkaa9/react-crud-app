@@ -1,21 +1,18 @@
 import FormStatus from 'components/FormStatus'
-import ky, { HTTPError } from 'ky'
-import React, { useEffect, useState } from 'react'
+import { HTTPError } from 'ky'
+import React, { useState } from 'react'
+import api from 'utils/api'
 import validateAccountId from 'utils/validateAccountId'
 
 const GetTransactionsId = () => {
   const [accountId, setAccountId] = useState('')
   const [transactionsForId, setTransactionsForId] =
-    useState<Array<TransactionResponse | null>>()
+    useState<Array<TransactionResponse>>()
 
   const [requestStatus, setRequestStatus] =
     useState<RequestStatusOptions>('idle')
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-
-  useEffect(() => {
-    if (requestStatus !== 'success') setTransactionsForId([null])
-  }, [requestStatus])
 
   return (
     <>
@@ -35,9 +32,8 @@ const GetTransactionsId = () => {
               setRequestStatus('error')
             } else {
               setRequestStatus('fetching')
-              ky.get(
-                `https://nestjs-bank-app.herokuapp.com/accounts/${accountId}/transactions`
-              )
+              api
+                .get(`accounts/${accountId}/transactions`)
                 .json<Array<TransactionResponse>>()
                 .then((data) => {
                   setTransactionsForId(data)
@@ -63,7 +59,7 @@ const GetTransactionsId = () => {
             />
           ) : null}
         </div>
-        {transactionsForId?.[0] !== null ? (
+        {transactionsForId && requestStatus === 'success' ? (
           <div>
             {transactionsForId?.map((transaction, i) => (
               <div key={i} className="singleTransaction">
@@ -77,6 +73,9 @@ const GetTransactionsId = () => {
               </div>
             ))}
           </div>
+        ) : null}
+        {transactionsForId?.length === 0 && requestStatus === 'success' ? (
+          <h4>No transactions found</h4>
         ) : null}
       </div>
     </>

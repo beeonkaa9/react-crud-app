@@ -1,6 +1,7 @@
 import FormStatus from 'components/FormStatus'
-import ky, { HTTPError } from 'ky'
+import { HTTPError } from 'ky'
 import React, { useState } from 'react'
+import api from 'utils/api'
 
 const GetAllAccounts = () => {
   const [accounts, setAccounts] = useState<Array<AccountResponse>>()
@@ -12,7 +13,8 @@ const GetAllAccounts = () => {
 
   const getAccounts = () => {
     setRequestStatus('fetching')
-    ky.get('https://nestjs-bank-app.herokuapp.com/accounts')
+    api
+      .get('accounts')
       .json<Array<AccountResponse>>()
       .then((data) => {
         setAccounts(data)

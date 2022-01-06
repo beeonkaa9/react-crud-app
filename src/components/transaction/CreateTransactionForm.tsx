@@ -1,6 +1,7 @@
 import FormStatus from 'components/FormStatus'
-import ky, { HTTPError } from 'ky'
+import { HTTPError } from 'ky'
 import React, { useEffect, useState } from 'react'
+import api from 'utils/api'
 import validateCreateTransaction from 'utils/validateCreateTransaction'
 import { TransactionType } from './Transaction'
 
@@ -104,9 +105,8 @@ const CreateTransactionForm = ({
             } else {
               setFormValidationErrors(null)
               setRequestStatus('fetching')
-              ky.post(
-                `https://nestjs-bank-app.herokuapp.com/accounts/${formInput.id}/transactions/add`,
-                {
+              api
+                .post(`accounts/${formInput.id}/transactions/add`, {
                   json: {
                     id: formInput.id,
                     note: formInput.note,
@@ -115,8 +115,7 @@ const CreateTransactionForm = ({
                       currency: formInput.currency,
                     },
                   },
-                }
-              )
+                })
                 //201 HTTP code results in 'unexpected end of JSON input' error, so it must be text
                 .text()
                 .then(() => {
@@ -153,9 +152,8 @@ const CreateTransactionForm = ({
             } else {
               setFormValidationErrors(null)
               setRequestStatus('fetching')
-              ky.post(
-                `https://nestjs-bank-app.herokuapp.com/accounts/${formInput.id}/transactions/withdraw`,
-                {
+              api
+                .post(`accounts/${formInput.id}/transactions/withdraw`, {
                   json: {
                     id: formInput.id,
                     note: formInput.note,
@@ -164,8 +162,7 @@ const CreateTransactionForm = ({
                       currency: formInput.currency,
                     },
                   },
-                }
-              )
+                })
                 //201 HTTP code results in 'unexpected end of JSON input' error, so it must be text
                 .text()
                 .then(() => {
@@ -202,9 +199,8 @@ const CreateTransactionForm = ({
             } else {
               setFormValidationErrors(null)
               setRequestStatus('fetching')
-              ky.post(
-                `https://nestjs-bank-app.herokuapp.com/accounts/${formInput.id}/transactions/send`,
-                {
+              api
+                .post(`accounts/${formInput.id}/transactions/send`, {
                   json: {
                     id: formInput.id,
                     note: formInput.note,
@@ -214,8 +210,7 @@ const CreateTransactionForm = ({
                       currency: formInput.currency,
                     },
                   },
-                }
-              )
+                })
                 //201 HTTP code results in 'unexpected end of JSON input' error, so it must be text
                 .text()
                 .then(() => {

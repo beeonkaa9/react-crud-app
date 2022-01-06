@@ -1,6 +1,7 @@
 import FormStatus from 'components/FormStatus'
-import ky, { HTTPError } from 'ky'
+import { HTTPError } from 'ky'
 import React, { useState } from 'react'
+import api from 'utils/api'
 import validateAccountId from 'utils/validateAccountId'
 
 const DeleteAccount = () => {
@@ -29,9 +30,8 @@ const DeleteAccount = () => {
             setRequestStatus('error')
           } else {
             setRequestStatus('fetching')
-            ky.delete(
-              `https://nestjs-bank-app.herokuapp.com/accounts/${accountId}`
-            )
+            api
+              .delete(`accounts/${accountId}`)
               //200 HTTP code for delete results in 'unexpected end of JSON input' error, so it must be text
               .text()
               .then(() => {

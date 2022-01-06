@@ -1,6 +1,7 @@
 import FormStatus from 'components/FormStatus'
-import ky, { HTTPError } from 'ky'
+import { HTTPError } from 'ky'
 import React, { useState } from 'react'
+import api from 'utils/api'
 
 const GetAllTransactions = () => {
   const [transactions, setTransactions] = useState<Array<TransactionResponse>>()
@@ -16,7 +17,8 @@ const GetAllTransactions = () => {
       <button
         onClick={() => {
           setRequestStatus('fetching')
-          ky.get('https://nestjs-bank-app.herokuapp.com/transactions')
+          api
+            .get('transactions')
             .json<Array<TransactionResponse>>()
             .then((data) => {
               setTransactions(data)
