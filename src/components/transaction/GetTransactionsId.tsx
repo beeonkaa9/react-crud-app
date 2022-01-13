@@ -1,18 +1,28 @@
 import FormStatus from 'components/FormStatus'
+import useGetTransactionsIdQuery from 'hooks/transaction/useGetTransactionsIdQuery'
 import { HTTPError } from 'ky'
-import React, { useState } from 'react'
-import api from 'utils/api'
+import React, { useEffect, useState } from 'react'
 import validateAccountId from 'utils/validateAccountId'
 
 const GetTransactionsId = () => {
   const [accountId, setAccountId] = useState('')
-  const [transactionsForId, setTransactionsForId] =
-    useState<Array<TransactionResponse>>()
-
-  const [requestStatus, setRequestStatus] =
-    useState<RequestStatusOptions>('idle')
-
+  const [submittedAccountId, setSubmittedAccountId] = useState('')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  const getTransactionsForId = useGetTransactionsIdQuery(submittedAccountId)
+
+  useEffect(() => {
+    if (getTransactionsForId.isError) {
+      if (getTransactionsForId.error instanceof HTTPError) {
+        // getAccountId.error.response
+        //   .json()
+        //   .then((e) => setErrorMessage(e.message))
+        setErrorMessage(getTransactionsForId.error.message)
+      } else if (getTransactionsForId.error instanceof Error) {
+        setErrorMessage(getTransactionsForId.error.message)
+      }
+    }
+  }, [getTransactionsForId.isError])
 
   return (
     <>
@@ -23,29 +33,18 @@ const GetTransactionsId = () => {
           value={accountId}
           placeholder="ccc3a91d-449c-41ff-a6fe-d79001431e4f"
           onChange={(e) => setAccountId(e.target.value)}
-        ></input>
+        />
         <button
           onClick={() => {
             const validateInput = validateAccountId(accountId)
             if (validateInput) {
               setErrorMessage(validateInput)
-              setRequestStatus('error')
+
+              //to prevent fetching/refetching with invalid uuid
+              setSubmittedAccountId('')
             } else {
-              setRequestStatus('fetching')
-              api
-                .get(`accounts/${accountId}/transactions`)
-                .json<Array<TransactionResponse>>()
-                .then((data) => {
-                  setTransactionsForId(data)
-                  setRequestStatus('success')
-                })
-                .catch((e) => {
-                  setRequestStatus('error')
-                  if (e instanceof HTTPError) {
-                    e.response.json().then((e) => setErrorMessage(e.message))
-                  }
-                  setErrorMessage(e.message)
-                })
+              setSubmittedAccountId(accountId)
+              setErrorMessage(null)
             }
           }}
         >
@@ -53,15 +52,21 @@ const GetTransactionsId = () => {
         </button>
 
         <div className="requestStatus">
-          {requestStatus === 'fetching' || requestStatus === 'error' ? (
+          {/* {requestStatus === 'fetching' || requestStatus === 'error' ? (
             <FormStatus
               request={{ status: requestStatus, message: errorMessage }}
             />
+          ) : null} */}
+          {getTransactionsForId.isLoading ? (
+            <div className="loading">Please wait...</div>
+          ) : errorMessage != null ? (
+            <div className="error">An error occurred: {errorMessage}</div>
           ) : null}
         </div>
-        {transactionsForId && requestStatus === 'success' ? (
+
+        {getTransactionsForId.isSuccess ? (
           <div>
-            {transactionsForId?.map((transaction, i) => (
+            {getTransactionsForId.data?.map((transaction, i) => (
               <div key={i} className="singleTransaction">
                 <div>Id: {transaction?.id}</div>
                 <div>Note: {transaction?.note}</div>
@@ -74,7 +79,8 @@ const GetTransactionsId = () => {
             ))}
           </div>
         ) : null}
-        {transactionsForId?.length === 0 && requestStatus === 'success' ? (
+        {getTransactionsForId.data?.length === 0 &&
+        getTransactionsForId.isSuccess ? (
           <h4>No transactions found</h4>
         ) : null}
       </div>

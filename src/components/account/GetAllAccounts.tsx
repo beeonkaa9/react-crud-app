@@ -1,64 +1,64 @@
 import FormStatus from 'components/FormStatus'
+import useGetAllAccountsQuery from 'hooks/account/useGetAllAccountsQuery'
 import { HTTPError } from 'ky'
-import React, { useState } from 'react'
-import api from 'utils/api'
+import React, { useEffect, useState } from 'react'
 
 const GetAllAccounts = () => {
-  const [accounts, setAccounts] = useState<Array<AccountResponse>>()
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const [requestStatus, setRequestStatus] =
-    useState<RequestStatusOptions>('idle')
+  const getAllAccounts = useGetAllAccountsQuery()
 
-  const [errorMessage, setErrorMessage] = useState(null)
-
-  const getAccounts = () => {
-    setRequestStatus('fetching')
-    api
-      .get('accounts')
-      .json<Array<AccountResponse>>()
-      .then((data) => {
-        setAccounts(data)
-        setRequestStatus('success')
-      })
-      .catch((e) => {
-        setRequestStatus('error')
-        if (e instanceof HTTPError) {
-          e.response.json().then((e) => setErrorMessage(e.message))
-        }
-        setErrorMessage(e.message)
-      })
-  }
+  useEffect(() => {
+    if (getAllAccounts.isError) {
+      if (getAllAccounts.error instanceof HTTPError) {
+        // getAccountId.error.response
+        //   .json()
+        //   .then((e) => setErrorMessage(e.message))
+        setErrorMessage(getAllAccounts.error.message)
+      } else if (getAllAccounts.error instanceof Error) {
+        setErrorMessage(getAllAccounts.error.message)
+      }
+    }
+  }, [getAllAccounts.isError])
 
   return (
     <div className="sectionContainer">
       <h3>View all accounts</h3>
-      <button onClick={getAccounts}>Get all accounts</button>
+      <button onClick={() => getAllAccounts.refetch()}>Get all accounts</button>
       <div>
         <div className="requestStatus">
-          {requestStatus === 'fetching' || requestStatus === 'error' ? (
+          {/* {requestStatus === 'fetching' || requestStatus === 'error' ? (
             <FormStatus
               request={{ status: requestStatus, message: errorMessage }}
             />
+          ) : null} */}
+          {getAllAccounts.isLoading ? (
+            <div className="loading">Please wait...</div>
+          ) : errorMessage != null ? (
+            <div className="error">An error occurred: {errorMessage}</div>
           ) : null}
         </div>
         <div>
-          {accounts !== undefined && accounts.length === 0 ? (
-            <h4>No accounts found</h4>
-          ) : (
-            accounts?.map((account, i) => (
-              <div key={i} className="singleAccount">
-                <div>Id: {account.id}</div>
-                <div>
-                  Name: {account.given_name} {account.family_name}
+          {getAllAccounts.isSuccess ? (
+            getAllAccounts.data !== undefined &&
+            getAllAccounts.data.length === 0 ? (
+              <h4>No accounts found</h4>
+            ) : (
+              getAllAccounts.data?.map((account, i) => (
+                <div key={i} className="singleAccount">
+                  <div>Id: {account.id}</div>
+                  <div>
+                    Name: {account.given_name} {account.family_name}
+                  </div>
+                  <div>Email: {account.email_address}</div>
+                  <div>
+                    Balance: {account.balance.amount} {account.balance.currency}
+                  </div>
+                  <div>Note: {account.note}</div>
                 </div>
-                <div>Email: {account.email_address}</div>
-                <div>
-                  Balance: {account.balance.amount} {account.balance.currency}
-                </div>
-                <div>Note: {account.note}</div>
-              </div>
-            ))
-          )}
+              ))
+            )
+          ) : null}
         </div>
       </div>
     </div>
