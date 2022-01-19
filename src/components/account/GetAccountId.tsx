@@ -1,5 +1,4 @@
 import FormStatus from 'components/FormStatus'
-import RequestStatus from 'components/RequestStatus'
 import useGetAccountIdQuery from 'hooks/account/useGetAccountIdQuery'
 import { HTTPError } from 'ky'
 import React, { useEffect, useState } from 'react'
@@ -15,10 +14,8 @@ const GetAccountId = () => {
   useEffect(() => {
     if (getAccountId.isError) {
       if (getAccountId.error instanceof HTTPError) {
-        // getAccountId.error.response
-        //   .json()
-        //   .then((e) => setErrorMessage(e.message))
-        setErrorMessage(getAccountId.error.message)
+        const errorResponse = getAccountId.error.response.clone()
+        errorResponse.json().then((e) => setErrorMessage(e.message))
       } else if (getAccountId.error instanceof Error) {
         setErrorMessage(getAccountId.error.message)
       }
@@ -43,6 +40,9 @@ const GetAccountId = () => {
             //to prevent fetching/refetching with invalid uuid
             setSubmittedAccountId('')
           } else {
+            //must refetch, otherwise account does not show up if it is searched for
+            //first, created, then searched for again (would need to be manually refetched)
+            getAccountId.refetch()
             setSubmittedAccountId(accountId)
             setErrorMessage(null)
           }

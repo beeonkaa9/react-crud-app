@@ -11,10 +11,8 @@ const GetAllAccounts = () => {
   useEffect(() => {
     if (getAllAccounts.isError) {
       if (getAllAccounts.error instanceof HTTPError) {
-        // getAccountId.error.response
-        //   .json()
-        //   .then((e) => setErrorMessage(e.message))
-        setErrorMessage(getAllAccounts.error.message)
+        const errorResponse = getAllAccounts.error.response.clone()
+        errorResponse.json().then((e) => setErrorMessage(e.message))
       } else if (getAllAccounts.error instanceof Error) {
         setErrorMessage(getAllAccounts.error.message)
       }

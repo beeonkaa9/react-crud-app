@@ -10,10 +10,8 @@ const GetAllTransactions = () => {
   useEffect(() => {
     if (getAllTransactions.isError) {
       if (getAllTransactions.error instanceof HTTPError) {
-        // getAccountId.error.response
-        //   .json()
-        //   .then((e) => setErrorMessage(e.message))
-        setErrorMessage(getAllTransactions.error.message)
+        const errorResponse = getAllTransactions.error.response.clone()
+        errorResponse.json().then((e) => setErrorMessage(e.message))
       } else if (getAllTransactions.error instanceof Error) {
         setErrorMessage(getAllTransactions.error.message)
       }

@@ -14,10 +14,8 @@ const GetTransactionsId = () => {
   useEffect(() => {
     if (getTransactionsForId.isError) {
       if (getTransactionsForId.error instanceof HTTPError) {
-        // getAccountId.error.response
-        //   .json()
-        //   .then((e) => setErrorMessage(e.message))
-        setErrorMessage(getTransactionsForId.error.message)
+        const errorResponse = getTransactionsForId.error.response.clone()
+        errorResponse.json().then((e) => setErrorMessage(e.message))
       } else if (getTransactionsForId.error instanceof Error) {
         setErrorMessage(getTransactionsForId.error.message)
       }
@@ -44,6 +42,10 @@ const GetTransactionsId = () => {
               setSubmittedAccountId('')
             } else {
               setSubmittedAccountId(accountId)
+              //must refetch since transaction won't show up if it is searched for,
+              //created, then searched for again; stays stuck on
+              //"No transactions found" unless manually refetched
+              getTransactionsForId.refetch()
               setErrorMessage(null)
             }
           }}
