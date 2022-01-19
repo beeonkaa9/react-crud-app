@@ -1,8 +1,8 @@
-import FormStatus from 'components/FormStatus'
+// import FormStatus from 'components/FormStatus'
 import React, { useState } from 'react'
 import validateCreateAccount from 'utils/validateCreateAccount'
 import { HTTPError } from 'ky'
-import api from 'utils/api'
+import useCreateAccountMutation from 'hooks/account/useCreateAccountMutation'
 
 const formInitialState = {
   id: '',
@@ -17,15 +17,13 @@ const formInitialState = {
 const CreateAccount = () => {
   const [formInput, setFormInput] = useState(formInitialState)
 
-  const [requestStatus, setRequestStatus] =
-    useState<RequestStatusOptions>('idle')
-
   //for error and success messages
   const [message, setMessage] = useState<string | null>(null)
-
   const [formValidationErrors, setFormValidationErrors] = useState<
     string[] | null
   >(null)
+
+  const createAccount = useCreateAccountMutation()
 
   return (
     <div className="CreateAccount">
@@ -102,6 +100,7 @@ const CreateAccount = () => {
         type="submit"
         className="createAccountBtn"
         onClick={() => {
+          createAccount.reset()
           const validateForm = validateCreateAccount(formInput)
           const validationErrors = Object.values(validateForm).filter(
             (error) => error !== ''
@@ -110,35 +109,31 @@ const CreateAccount = () => {
             setFormValidationErrors(validationErrors)
           } else {
             setFormValidationErrors(null)
-            setRequestStatus('fetching')
-            api
-              .post('accounts', {
-                json: {
-                  given_name: formInput.firstName,
-                  family_name: formInput.lastName,
-                  email_address: formInput.email,
-                  id: formInput.id,
-                  balance: {
-                    amount: parseInt(formInput.amount),
-                    currency: formInput.currency,
-                  },
-                  note: formInput.note,
+            createAccount.mutate(
+              {
+                firstName: formInput.firstName,
+                lastName: formInput.lastName,
+                email: formInput.email,
+                id: formInput.id,
+                amount: formInput.amount,
+                currency: formInput.currency,
+                note: formInput.note,
+              },
+              {
+                onError: (err) => {
+                  if (err instanceof HTTPError) {
+                    const errorResponse = err.response.clone()
+                    errorResponse.json().then((e) => setMessage(e.message))
+                  } else if (err instanceof Error) {
+                    setMessage(err.message)
+                  }
                 },
-              })
-              //201 HTTP code results in 'unexpected end of JSON input' error, so it must be text
-              .text()
-              .then(() => {
-                setRequestStatus('success')
-                setFormInput(formInitialState)
-                setMessage('Account successfully created!')
-              })
-              .catch((e) => {
-                setRequestStatus('error')
-                if (e instanceof HTTPError) {
-                  e.response.json().then((e) => setMessage(e.message))
-                }
-                setMessage(e.message)
-              })
+                onSuccess: () => {
+                  setMessage('Account successfully created!')
+                  setFormInput(formInitialState)
+                },
+              }
+            )
           }
         }}
       >
@@ -146,10 +141,27 @@ const CreateAccount = () => {
       </button>
 
       <div className="requestStatus">
-        <FormStatus
+        {/* <FormStatus
           request={{ status: requestStatus, message }}
           validationErrors={formValidationErrors}
-        />
+        /> */}
+        {createAccount.isLoading && (
+          <div className="loading">Please wait...</div>
+        )}
+        {createAccount.isSuccess && <div className="success">{message}</div>}
+
+        {createAccount.isError && (
+          <div className="error">An error occurred: {message}</div>
+        )}
+        {formValidationErrors ? (
+          <>
+            {formValidationErrors.map((error, i) => (
+              <div key={i} className="formErrors">
+                <div>{error}</div>
+              </div>
+            ))}
+          </>
+        ) : null}
       </div>
     </div>
   )

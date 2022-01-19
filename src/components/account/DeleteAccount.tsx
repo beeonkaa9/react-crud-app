@@ -1,7 +1,7 @@
-import FormStatus from 'components/FormStatus'
+// import FormStatus from 'components/FormStatus'
+import useDeleteAccountMutation from 'hooks/account/useDeleteAccountMutation'
 import { HTTPError } from 'ky'
 import React, { useState } from 'react'
-import api from 'utils/api'
 import validateAccountId from 'utils/validateAccountId'
 
 const DeleteAccount = () => {
@@ -9,9 +9,9 @@ const DeleteAccount = () => {
 
   //for error and success messages
   const [message, setMessage] = useState<string | null>(null)
+  const [errorMessage, setErrorMessage] = useState('')
 
-  const [requestStatus, setRequestStatus] =
-    useState<RequestStatusOptions>('idle')
+  const deleteAccount = useDeleteAccountMutation()
 
   return (
     <div className="sectionContainer">
@@ -26,26 +26,22 @@ const DeleteAccount = () => {
         onClick={() => {
           const validateInput = validateAccountId(accountId)
           if (validateInput) {
-            setMessage(validateInput)
-            setRequestStatus('error')
+            setErrorMessage(validateInput)
           } else {
-            setRequestStatus('fetching')
-            api
-              .delete(`accounts/${accountId}`)
-              //200 HTTP code for delete results in 'unexpected end of JSON input' error, so it must be text
-              .text()
-              .then(() => {
-                setRequestStatus('success')
-                setMessage('Deletion successful!')
-                setAccountId('')
-              })
-              .catch((e) => {
-                setRequestStatus('error')
-                if (e instanceof HTTPError) {
-                  e.response.json().then((e) => setMessage(e.message))
+            setErrorMessage('')
+            deleteAccount.mutate(accountId, {
+              onError: (err) => {
+                if (err instanceof HTTPError) {
+                  const errorResponse = err.response.clone()
+                  errorResponse.json().then((e) => setErrorMessage(e.message))
+                } else if (err instanceof Error) {
+                  setErrorMessage(err.message)
                 }
-                setMessage(e.message)
-              })
+              },
+              onSuccess: () => {
+                setMessage('Account successfully deleted!')
+              },
+            })
           }
         }}
       >
@@ -53,7 +49,15 @@ const DeleteAccount = () => {
       </button>
 
       <div className="requestStatus">
-        <FormStatus request={{ status: requestStatus, message }} />
+        {/* <FormStatus request={{ status: requestStatus, message }} /> */}
+        {deleteAccount.isLoading && (
+          <div className="loading">Please wait...</div>
+        )}
+        {deleteAccount.isSuccess && <div className="success">{message}</div>}
+
+        {errorMessage != '' && (
+          <div className="error">An error occurred: {errorMessage}</div>
+        )}
       </div>
     </div>
   )
