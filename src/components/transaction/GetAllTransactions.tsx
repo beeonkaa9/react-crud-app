@@ -25,15 +25,13 @@ const GetAllTransactions = () => {
         Get transactions
       </button>
       <div className="requestStatus">
-        {/* {requestStatus === 'fetching' || requestStatus === 'error' ? (
+        {getAllTransactions.isLoading || getAllTransactions.isError ? (
           <FormStatus
-            request={{ status: requestStatus, message: errorMessage }}
+            request={{
+              status: getAllTransactions.status,
+              message: errorMessage,
+            }}
           />
-        ) : null} */}
-        {getAllTransactions.isLoading ? (
-          <div className="loading">Please wait...</div>
-        ) : errorMessage != null ? (
-          <div className="error">An error occurred: {errorMessage}</div>
         ) : null}
       </div>
 

@@ -1,4 +1,3 @@
-// import FormStatus from 'components/FormStatus'
 import useCreateDepositMutation from 'hooks/transaction/useCreateDepositMutation'
 import useCreateTransferMutation from 'hooks/transaction/useCreateTransferMutation'
 import useCreateWithdrawalMutation from 'hooks/transaction/useCreateWithdrawalMutation'
@@ -227,10 +226,6 @@ const CreateTransactionForm = ({
       ) : null}
 
       <div className="transactionFormStatus">
-        {/* <FormStatus
-          request={{ status: requestStatus, message }}
-          validationErrors={formValidationErrors}
-        /> */}
         {(addMoney.isLoading ||
           withdrawMoney.isLoading ||
           transferMoney.isLoading) && (

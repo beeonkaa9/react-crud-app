@@ -1,4 +1,3 @@
-import FormStatus from 'components/FormStatus'
 import useGetAccountIdQuery from 'hooks/account/useGetAccountIdQuery'
 import { HTTPError } from 'ky'
 import React, { useEffect, useState } from 'react'
@@ -57,13 +56,6 @@ const GetAccountId = () => {
         ) : errorMessage != null ? (
           <div className="error">An error occurred: {errorMessage}</div>
         ) : null}
-        {/* {getAccountId.isLoading ||
-        errorMessage != null ||
-        getAccountId.isError ? (
-          <RequestStatus
-            request={{ status: getAccountId.status, message: errorMessage }}
-          />
-        ) : null} */}
       </div>
 
       {getAccountId.isSuccess ? (

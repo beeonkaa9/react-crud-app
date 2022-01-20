@@ -10,6 +10,11 @@
   height: 100px;
 }
 
+.BankLogoContainer {
+  display: flex;
+  height: inherit;
+}
+
 .bankLogo {
   width: 500px;
 }
@@ -17,6 +22,7 @@
 .NavLinks {
   display: flex;
   padding-top: 30px;
+  margin-left: 20%;
 }
 
 a {

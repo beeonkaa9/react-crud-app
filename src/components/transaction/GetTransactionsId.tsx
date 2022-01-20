@@ -1,4 +1,3 @@
-import FormStatus from 'components/FormStatus'
 import useGetTransactionsIdQuery from 'hooks/transaction/useGetTransactionsIdQuery'
 import { HTTPError } from 'ky'
 import React, { useEffect, useState } from 'react'
@@ -54,11 +53,6 @@ const GetTransactionsId = () => {
         </button>
 
         <div className="requestStatus">
-          {/* {requestStatus === 'fetching' || requestStatus === 'error' ? (
-            <FormStatus
-              request={{ status: requestStatus, message: errorMessage }}
-            />
-          ) : null} */}
           {getTransactionsForId.isLoading ? (
             <div className="loading">Please wait...</div>
           ) : errorMessage != null ? (

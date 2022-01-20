@@ -24,4 +24,4 @@ type TransactionResponse = {
   amount_money: TransactionAmount
 }
 
-type RequestStatusOptions = 'fetching' | 'success' | 'error' | 'idle'
+type QueryMutationStatus = 'loading' | 'success' | 'error' | 'idle'

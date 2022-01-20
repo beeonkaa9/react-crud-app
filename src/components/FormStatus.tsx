@@ -1,13 +1,13 @@
 import React from 'react'
-type RequestStatusProps = {
+type FormStatusProps = {
   request: {
-    status: RequestStatusOptions
+    status: QueryMutationStatus
     message?: string | null
   }
   validationErrors?: string[] | null
 }
 
-const FormStatus = ({ request, validationErrors }: RequestStatusProps) => {
+const FormStatus = ({ request, validationErrors }: FormStatusProps) => {
   if (validationErrors !== null && validationErrors !== undefined) {
     return (
       <>
@@ -22,7 +22,7 @@ const FormStatus = ({ request, validationErrors }: RequestStatusProps) => {
 
   return {
     idle: null,
-    fetching: <div className="loading">Please wait...</div>,
+    loading: <div className="loading">Please wait...</div>,
     success: <div className="success">{request.message}</div>,
     error: <div className="error">An error occurred: {request.message}</div>,
   }[request.status]

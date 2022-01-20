@@ -1,4 +1,4 @@
-// import FormStatus from 'components/FormStatus'
+import FormStatus from 'components/FormStatus'
 import useDeleteAccountMutation from 'hooks/account/useDeleteAccountMutation'
 import { HTTPError } from 'ky'
 import React, { useState } from 'react'
@@ -7,9 +7,11 @@ import validateAccountId from 'utils/validateAccountId'
 const DeleteAccount = () => {
   const [accountId, setAccountId] = useState('')
 
-  //for error and success messages
+  //for error and success messages from mutation
   const [message, setMessage] = useState<string | null>(null)
-  const [errorMessage, setErrorMessage] = useState('')
+  const [validationMessage, setValidationMessage] = useState<string | null>(
+    null
+  )
 
   const deleteAccount = useDeleteAccountMutation()
 
@@ -24,18 +26,19 @@ const DeleteAccount = () => {
       ></input>
       <button
         onClick={() => {
+          deleteAccount.reset()
           const validateInput = validateAccountId(accountId)
           if (validateInput) {
-            setErrorMessage(validateInput)
+            setValidationMessage(validateInput)
           } else {
-            setErrorMessage('')
+            setValidationMessage(null)
             deleteAccount.mutate(accountId, {
               onError: (err) => {
                 if (err instanceof HTTPError) {
                   const errorResponse = err.response.clone()
-                  errorResponse.json().then((e) => setErrorMessage(e.message))
+                  errorResponse.json().then((e) => setMessage(e.message))
                 } else if (err instanceof Error) {
-                  setErrorMessage(err.message)
+                  setMessage(err.message)
                 }
               },
               onSuccess: () => {
@@ -49,14 +52,9 @@ const DeleteAccount = () => {
       </button>
 
       <div className="requestStatus">
-        {/* <FormStatus request={{ status: requestStatus, message }} /> */}
-        {deleteAccount.isLoading && (
-          <div className="loading">Please wait...</div>
-        )}
-        {deleteAccount.isSuccess && <div className="success">{message}</div>}
-
-        {errorMessage != '' && (
-          <div className="error">An error occurred: {errorMessage}</div>
+        <FormStatus request={{ status: deleteAccount.status, message }} />
+        {validationMessage != null && (
+          <div className="error">{validationMessage}</div>
         )}
       </div>
     </div>

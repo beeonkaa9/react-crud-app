@@ -12,7 +12,9 @@ function App() {
     <div className="App">
       <QueryClientProvider client={queryClient}>
         <header className="Header">
-          <img src={BankLogo} className="bankLogo" alt="logo" />
+          <div className="BankLogoContainer">
+            <img src={BankLogo} className="bankLogo" alt="logo" />
+          </div>
           <nav className="NavLinks">
             <Link to="/account">Account Center</Link>
             <Link to="/transaction">Transactions</Link>

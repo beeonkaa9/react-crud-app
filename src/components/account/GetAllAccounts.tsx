@@ -25,15 +25,10 @@ const GetAllAccounts = () => {
       <button onClick={() => getAllAccounts.refetch()}>Get all accounts</button>
       <div>
         <div className="requestStatus">
-          {/* {requestStatus === 'fetching' || requestStatus === 'error' ? (
+          {getAllAccounts.isLoading || getAllAccounts.isError ? (
             <FormStatus
-              request={{ status: requestStatus, message: errorMessage }}
+              request={{ status: getAllAccounts.status, message: errorMessage }}
             />
-          ) : null} */}
-          {getAllAccounts.isLoading ? (
-            <div className="loading">Please wait...</div>
-          ) : errorMessage != null ? (
-            <div className="error">An error occurred: {errorMessage}</div>
           ) : null}
         </div>
         <div>

@@ -1,8 +1,8 @@
-// import FormStatus from 'components/FormStatus'
 import React, { useState } from 'react'
 import validateCreateAccount from 'utils/validateCreateAccount'
 import { HTTPError } from 'ky'
 import useCreateAccountMutation from 'hooks/account/useCreateAccountMutation'
+import FormStatus from 'components/FormStatus'
 
 const formInitialState = {
   id: '',
@@ -141,27 +141,10 @@ const CreateAccount = () => {
       </button>
 
       <div className="requestStatus">
-        {/* <FormStatus
-          request={{ status: requestStatus, message }}
+        <FormStatus
+          request={{ status: createAccount.status, message }}
           validationErrors={formValidationErrors}
-        /> */}
-        {createAccount.isLoading && (
-          <div className="loading">Please wait...</div>
-        )}
-        {createAccount.isSuccess && <div className="success">{message}</div>}
-
-        {createAccount.isError && (
-          <div className="error">An error occurred: {message}</div>
-        )}
-        {formValidationErrors ? (
-          <>
-            {formValidationErrors.map((error, i) => (
-              <div key={i} className="formErrors">
-                <div>{error}</div>
-              </div>
-            ))}
-          </>
-        ) : null}
+        />
       </div>
     </div>
   )
