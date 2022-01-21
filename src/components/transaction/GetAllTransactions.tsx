@@ -1,11 +1,11 @@
 import FormStatus from 'components/FormStatus'
-import useGetAllTransactionsQuery from 'hooks/transaction/useGetAllTransactionsQuery'
+import useAllTransactionsQuery from 'hooks/transaction/useAllTransactionsQuery'
 import { HTTPError } from 'ky'
 import React, { useEffect, useState } from 'react'
 
 const GetAllTransactions = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const getAllTransactions = useGetAllTransactionsQuery()
+  const getAllTransactions = useAllTransactionsQuery()
 
   useEffect(() => {
     if (getAllTransactions.isError) {

@@ -1,7 +1,8 @@
 import React from 'react'
+import { UseMutationResult } from 'react-query'
 type FormStatusProps = {
   request: {
-    status: QueryMutationStatus
+    status: UseMutationResult['status']
     message?: string | null
   }
   validationErrors?: string[] | null

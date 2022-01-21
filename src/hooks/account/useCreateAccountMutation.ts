@@ -11,8 +11,8 @@ type FormInput = {
   note: string
 }
 
-const createAccount = async (formInput: FormInput) => {
-  return await api
+const createAccount = (formInput: FormInput) =>
+  api
     .post('accounts', {
       json: {
         given_name: formInput.firstName,
@@ -27,7 +27,6 @@ const createAccount = async (formInput: FormInput) => {
       },
     })
     .text()
-}
 
 const useCreateAccountMutation = () => {
   return useMutation(createAccount)

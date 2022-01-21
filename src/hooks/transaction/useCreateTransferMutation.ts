@@ -9,8 +9,8 @@ type TransferMoneyFormInput = {
   currency: string
 }
 
-const transferMoney = async (formInput: TransferMoneyFormInput) => {
-  return await api
+const transferMoney = async (formInput: TransferMoneyFormInput) =>
+  api
     .post(`accounts/${formInput.id}/transactions/send`, {
       json: {
         id: formInput.id,
@@ -24,7 +24,6 @@ const transferMoney = async (formInput: TransferMoneyFormInput) => {
     })
     //201 HTTP code results in 'unexpected end of JSON input' error, so it must be text
     .text()
-}
 
 const useCreateTransferMutation = () => {
   return useMutation(transferMoney)

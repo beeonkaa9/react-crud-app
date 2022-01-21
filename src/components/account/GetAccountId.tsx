@@ -1,4 +1,4 @@
-import useGetAccountIdQuery from 'hooks/account/useGetAccountIdQuery'
+import useAccountIdQuery from 'hooks/account/useAccountIdQuery'
 import { HTTPError } from 'ky'
 import React, { useEffect, useState } from 'react'
 import validateAccountId from 'utils/validateAccountId'
@@ -8,7 +8,7 @@ const GetAccountId = () => {
   const [submittedAccountId, setSubmittedAccountId] = useState('')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const getAccountId = useGetAccountIdQuery(submittedAccountId)
+  const getAccountId = useAccountIdQuery(submittedAccountId)
 
   useEffect(() => {
     if (getAccountId.isError) {

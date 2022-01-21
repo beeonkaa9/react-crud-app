@@ -1,12 +1,12 @@
 import FormStatus from 'components/FormStatus'
-import useGetAllAccountsQuery from 'hooks/account/useGetAllAccountsQuery'
+import useAllAccountsQuery from 'hooks/account/useAllAccountsQuery'
 import { HTTPError } from 'ky'
 import React, { useEffect, useState } from 'react'
 
 const GetAllAccounts = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const getAllAccounts = useGetAllAccountsQuery()
+  const getAllAccounts = useAllAccountsQuery()
 
   useEffect(() => {
     if (getAllAccounts.isError) {

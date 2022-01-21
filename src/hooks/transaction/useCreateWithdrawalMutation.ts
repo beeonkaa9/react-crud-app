@@ -8,8 +8,8 @@ type WithdrawMoneyFormInput = {
   currency: string
 }
 
-const withdrawMoney = async (formInput: WithdrawMoneyFormInput) => {
-  return await api
+const withdrawMoney = (formInput: WithdrawMoneyFormInput) =>
+  api
     .post(`accounts/${formInput.id}/transactions/withdraw`, {
       json: {
         id: formInput.id,
@@ -22,7 +22,6 @@ const withdrawMoney = async (formInput: WithdrawMoneyFormInput) => {
     })
     //201 HTTP code results in 'unexpected end of JSON input' error, so it must be text
     .text()
-}
 
 const useCreateWithdrawalMutation = () => {
   return useMutation(withdrawMoney)

@@ -1,13 +1,12 @@
 import { useQuery } from 'react-query'
 import api from 'utils/api'
 
-const getTransactionsForId = async (accountId: string) => {
-  return await api
+const getTransactionsForId = (accountId: string) =>
+  api
     .get(`accounts/${accountId}/transactions`)
     .json<Array<TransactionResponse>>()
-}
 
-const useGetTransactionsIdQuery = (accountId: string) => {
+const useTransactionsIdQuery = (accountId: string) => {
   return useQuery(
     ['transaction', accountId],
     () => getTransactionsForId(accountId),
@@ -17,4 +16,4 @@ const useGetTransactionsIdQuery = (accountId: string) => {
   )
 }
 
-export default useGetTransactionsIdQuery
+export default useTransactionsIdQuery

@@ -1,4 +1,4 @@
-import useGetTransactionsIdQuery from 'hooks/transaction/useGetTransactionsIdQuery'
+import useTransactionsIdQuery from 'hooks/transaction/useTransactionsIdQuery'
 import { HTTPError } from 'ky'
 import React, { useEffect, useState } from 'react'
 import validateAccountId from 'utils/validateAccountId'
@@ -8,7 +8,7 @@ const GetTransactionsId = () => {
   const [submittedAccountId, setSubmittedAccountId] = useState('')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const getTransactionsForId = useGetTransactionsIdQuery(submittedAccountId)
+  const getTransactionsForId = useTransactionsIdQuery(submittedAccountId)
 
   useEffect(() => {
     if (getTransactionsForId.isError) {
