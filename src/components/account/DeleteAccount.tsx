@@ -12,10 +12,7 @@ const DeleteAccount = () => {
     null
   )
 
-  const deleteAccount = useDeleteAccountMutation({
-    setMessage,
-    successMessage: 'Account successfully deleted!',
-  })
+  const deleteAccount = useDeleteAccountMutation({ setMessage })
 
   return (
     <div className="sectionContainer">
@@ -28,7 +25,6 @@ const DeleteAccount = () => {
       ></input>
       <button
         onClick={() => {
-          deleteAccount.reset()
           const validateInput = validateAccountId(accountId)
           if (validateInput) {
             setValidationMessage(validateInput)

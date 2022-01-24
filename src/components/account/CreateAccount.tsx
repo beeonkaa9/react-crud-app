@@ -22,10 +22,7 @@ const CreateAccount = () => {
     string[] | null
   >(null)
 
-  const createAccount = useCreateAccountMutation({
-    setMessage,
-    successMessage: 'Account successfully created!',
-  })
+  const createAccount = useCreateAccountMutation({ setMessage })
 
   return (
     <div className="CreateAccount">
@@ -102,7 +99,6 @@ const CreateAccount = () => {
         type="submit"
         className="createAccountBtn"
         onClick={() => {
-          createAccount.reset()
           const validateForm = validateCreateAccount(formInput)
           const validationErrors = Object.values(validateForm).filter(
             (error) => error !== ''

@@ -34,18 +34,9 @@ const CreateTransactionForm = ({
     transferMoney.reset()
   }, [buttonClicked])
 
-  const addMoney = useCreateDepositMutation({
-    setMessage,
-    successMessage: 'Deposit successfully submitted!',
-  })
-  const withdrawMoney = useCreateWithdrawalMutation({
-    setMessage,
-    successMessage: 'Withdrawal successfully submitted!',
-  })
-  const transferMoney = useCreateTransferMutation({
-    setMessage,
-    successMessage: 'Transfer successfully submitted!',
-  })
+  const addMoney = useCreateDepositMutation({ setMessage })
+  const withdrawMoney = useCreateWithdrawalMutation({ setMessage })
+  const transferMoney = useCreateTransferMutation({ setMessage })
 
   return (
     <div className="TransactionForm">
@@ -103,7 +94,6 @@ const CreateTransactionForm = ({
       {buttonClicked === 'add' ? (
         <button
           onClick={() => {
-            addMoney.reset()
             const validateForm = validateCreateTransaction(
               formInput,
               buttonClicked
@@ -138,7 +128,6 @@ const CreateTransactionForm = ({
       {buttonClicked === 'withdraw' ? (
         <button
           onClick={() => {
-            withdrawMoney.reset()
             const validateForm = validateCreateTransaction(
               formInput,
               buttonClicked
@@ -173,7 +162,6 @@ const CreateTransactionForm = ({
       {buttonClicked === 'send' ? (
         <button
           onClick={() => {
-            transferMoney.reset()
             const validateForm = validateCreateTransaction(
               formInput,
               buttonClicked

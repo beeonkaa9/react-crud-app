@@ -26,10 +26,8 @@ const addMoney = (formInput: AddMoneyFormInput) =>
 
 const useCreateDepositMutation = ({
   setMessage,
-  successMessage,
 }: {
   setMessage?: React.Dispatch<React.SetStateAction<string | null>>
-  successMessage?: string
 }) => {
   const queryClient = useQueryClient()
 
@@ -45,7 +43,7 @@ const useCreateDepositMutation = ({
     onSuccess: (_, formInput) => {
       queryClient.invalidateQueries('transactions')
       queryClient.invalidateQueries(['transaction', formInput.id])
-      if (setMessage && successMessage) setMessage(successMessage)
+      if (setMessage) setMessage('Deposit successfully submitted!')
     },
   })
 }

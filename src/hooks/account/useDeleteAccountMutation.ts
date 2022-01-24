@@ -10,10 +10,8 @@ const deleteAccount = (accountId: string) =>
 
 const useDeleteAccountMutation = ({
   setMessage,
-  successMessage,
 }: {
   setMessage?: React.Dispatch<React.SetStateAction<string | null>>
-  successMessage?: string
 }) => {
   return useMutation(deleteAccount, {
     onError: (err) => {
@@ -25,7 +23,7 @@ const useDeleteAccountMutation = ({
       }
     },
     onSuccess: () => {
-      if (setMessage && successMessage) setMessage(successMessage)
+      if (setMessage) setMessage('Account successfully deleted!')
     },
   })
 }

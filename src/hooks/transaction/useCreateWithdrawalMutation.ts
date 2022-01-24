@@ -26,10 +26,8 @@ const withdrawMoney = (formInput: WithdrawMoneyFormInput) =>
 
 const useCreateWithdrawalMutation = ({
   setMessage,
-  successMessage,
 }: {
   setMessage?: React.Dispatch<React.SetStateAction<string | null>>
-  successMessage?: string
 }) => {
   const queryClient = useQueryClient()
 
@@ -45,7 +43,7 @@ const useCreateWithdrawalMutation = ({
     onSuccess: (_, formInput) => {
       queryClient.invalidateQueries('transactions')
       queryClient.invalidateQueries(['transaction', formInput.id])
-      if (setMessage && successMessage) setMessage(successMessage)
+      if (setMessage) setMessage('Withdrawal successfully submitted!')
     },
   })
 }

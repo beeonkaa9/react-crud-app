@@ -28,10 +28,8 @@ const transferMoney = async (formInput: TransferMoneyFormInput) =>
 
 const useCreateTransferMutation = ({
   setMessage,
-  successMessage,
 }: {
   setMessage?: React.Dispatch<React.SetStateAction<string | null>>
-  successMessage?: string
 }) => {
   const queryClient = useQueryClient()
 
@@ -47,7 +45,7 @@ const useCreateTransferMutation = ({
     onSuccess: (_, formInput) => {
       queryClient.invalidateQueries('transactions')
       queryClient.invalidateQueries(['transaction', formInput.id])
-      if (setMessage && successMessage) setMessage(successMessage)
+      if (setMessage) setMessage('Transfer successfully submitted!')
     },
   })
 }

@@ -31,10 +31,8 @@ const createAccount = (formInput: FormInput) =>
 
 const useCreateAccountMutation = ({
   setMessage,
-  successMessage,
 }: {
   setMessage?: React.Dispatch<React.SetStateAction<string | null>>
-  successMessage?: string
 }) => {
   const queryClient = useQueryClient()
 
@@ -50,7 +48,7 @@ const useCreateAccountMutation = ({
     onSuccess: (_, formInput) => {
       queryClient.invalidateQueries('accounts')
       queryClient.invalidateQueries(['account', formInput.id])
-      if (setMessage && successMessage) setMessage(successMessage)
+      if (setMessage) setMessage('Account successfully created!')
     },
   })
 }
