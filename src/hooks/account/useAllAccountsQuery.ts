@@ -1,6 +1,6 @@
-import { HTTPError } from 'ky'
 import { useQuery } from 'react-query'
 import api from 'utils/api'
+import handleAPIError from 'utils/handleAPIError'
 
 const getAllAccounts = () => api.get('accounts').json<Array<AccountResponse>>()
 
@@ -10,13 +10,7 @@ const useAllAccountsQuery = (
   return useQuery('accounts', () => getAllAccounts(), {
     enabled: false,
     onError: (err) => {
-      if (err instanceof HTTPError) {
-        const errorResponse = err.response.clone()
-        if (setErrorMessage)
-          errorResponse.json().then((e) => setErrorMessage(e.message))
-      } else if (err instanceof Error) {
-        if (setErrorMessage) setErrorMessage(err.message)
-      }
+      if (setErrorMessage) handleAPIError(err, setErrorMessage)
     },
   })
 }

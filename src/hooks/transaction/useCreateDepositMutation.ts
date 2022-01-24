@@ -1,6 +1,6 @@
-import { HTTPError } from 'ky'
 import { useMutation, useQueryClient } from 'react-query'
 import api from 'utils/api'
+import handleAPIError from 'utils/handleAPIError'
 
 type AddMoneyFormInput = {
   id: string
@@ -33,12 +33,7 @@ const useCreateDepositMutation = ({
 
   return useMutation(addMoney, {
     onError: (err) => {
-      if (err instanceof HTTPError) {
-        const errorResponse = err.response.clone()
-        if (setMessage) errorResponse.json().then((e) => setMessage(e.message))
-      } else if (err instanceof Error) {
-        if (setMessage) setMessage(err.message)
-      }
+      if (setMessage) handleAPIError(err, setMessage)
     },
     onSuccess: (_, formInput) => {
       queryClient.invalidateQueries('transactions')
