@@ -1,23 +1,11 @@
 import FormStatus from 'components/FormStatus'
 import useAllAccountsQuery from 'hooks/account/useAllAccountsQuery'
-import { HTTPError } from 'ky'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 const GetAllAccounts = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const getAllAccounts = useAllAccountsQuery()
-
-  useEffect(() => {
-    if (getAllAccounts.isError) {
-      if (getAllAccounts.error instanceof HTTPError) {
-        const errorResponse = getAllAccounts.error.response.clone()
-        errorResponse.json().then((e) => setErrorMessage(e.message))
-      } else if (getAllAccounts.error instanceof Error) {
-        setErrorMessage(getAllAccounts.error.message)
-      }
-    }
-  }, [getAllAccounts.isError])
+  const getAllAccounts = useAllAccountsQuery(setErrorMessage)
 
   return (
     <div className="sectionContainer">

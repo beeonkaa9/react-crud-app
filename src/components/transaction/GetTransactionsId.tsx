@@ -1,6 +1,5 @@
 import useTransactionsIdQuery from 'hooks/transaction/useTransactionsIdQuery'
-import { HTTPError } from 'ky'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import validateAccountId from 'utils/validateAccountId'
 
 const GetTransactionsId = () => {
@@ -8,18 +7,10 @@ const GetTransactionsId = () => {
   const [submittedAccountId, setSubmittedAccountId] = useState('')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const getTransactionsForId = useTransactionsIdQuery(submittedAccountId)
-
-  useEffect(() => {
-    if (getTransactionsForId.isError) {
-      if (getTransactionsForId.error instanceof HTTPError) {
-        const errorResponse = getTransactionsForId.error.response.clone()
-        errorResponse.json().then((e) => setErrorMessage(e.message))
-      } else if (getTransactionsForId.error instanceof Error) {
-        setErrorMessage(getTransactionsForId.error.message)
-      }
-    }
-  }, [getTransactionsForId.isError])
+  const getTransactionsForId = useTransactionsIdQuery(
+    submittedAccountId,
+    setErrorMessage
+  )
 
   return (
     <>
@@ -44,7 +35,6 @@ const GetTransactionsId = () => {
               //must refetch since transaction won't show up if it is searched for,
               //created, then searched for again; stays stuck on
               //"No transactions found" unless manually refetched
-              getTransactionsForId.refetch()
               setErrorMessage(null)
             }
           }}

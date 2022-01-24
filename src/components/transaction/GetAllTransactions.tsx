@@ -1,22 +1,11 @@
 import FormStatus from 'components/FormStatus'
 import useAllTransactionsQuery from 'hooks/transaction/useAllTransactionsQuery'
-import { HTTPError } from 'ky'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 const GetAllTransactions = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const getAllTransactions = useAllTransactionsQuery()
 
-  useEffect(() => {
-    if (getAllTransactions.isError) {
-      if (getAllTransactions.error instanceof HTTPError) {
-        const errorResponse = getAllTransactions.error.response.clone()
-        errorResponse.json().then((e) => setErrorMessage(e.message))
-      } else if (getAllTransactions.error instanceof Error) {
-        setErrorMessage(getAllTransactions.error.message)
-      }
-    }
-  }, [getAllTransactions.isError])
+  const getAllTransactions = useAllTransactionsQuery(setErrorMessage)
 
   return (
     <div className="sectionContainer">

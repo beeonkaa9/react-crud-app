@@ -1,6 +1,5 @@
 import useAccountIdQuery from 'hooks/account/useAccountIdQuery'
-import { HTTPError } from 'ky'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import validateAccountId from 'utils/validateAccountId'
 
 const GetAccountId = () => {
@@ -8,18 +7,7 @@ const GetAccountId = () => {
   const [submittedAccountId, setSubmittedAccountId] = useState('')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const getAccountId = useAccountIdQuery(submittedAccountId)
-
-  useEffect(() => {
-    if (getAccountId.isError) {
-      if (getAccountId.error instanceof HTTPError) {
-        const errorResponse = getAccountId.error.response.clone()
-        errorResponse.json().then((e) => setErrorMessage(e.message))
-      } else if (getAccountId.error instanceof Error) {
-        setErrorMessage(getAccountId.error.message)
-      }
-    }
-  }, [getAccountId.isError])
+  const getAccountId = useAccountIdQuery(submittedAccountId, setErrorMessage)
 
   return (
     <div className="sectionContainer">
@@ -41,7 +29,6 @@ const GetAccountId = () => {
           } else {
             //must refetch, otherwise account does not show up if it is searched for
             //first, created, then searched for again (would need to be manually refetched)
-            getAccountId.refetch()
             setSubmittedAccountId(accountId)
             setErrorMessage(null)
           }
