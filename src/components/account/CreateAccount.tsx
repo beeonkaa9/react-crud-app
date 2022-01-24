@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import validateCreateAccount from 'utils/validateCreateAccount'
-import { HTTPError } from 'ky'
 import useCreateAccountMutation from 'hooks/account/useCreateAccountMutation'
 import FormStatus from 'components/FormStatus'
 
@@ -23,7 +22,10 @@ const CreateAccount = () => {
     string[] | null
   >(null)
 
-  const createAccount = useCreateAccountMutation()
+  const createAccount = useCreateAccountMutation({
+    setMessage,
+    successMessage: 'Account successfully created!',
+  })
 
   return (
     <div className="CreateAccount">
@@ -120,16 +122,7 @@ const CreateAccount = () => {
                 note: formInput.note,
               },
               {
-                onError: (err) => {
-                  if (err instanceof HTTPError) {
-                    const errorResponse = err.response.clone()
-                    errorResponse.json().then((e) => setMessage(e.message))
-                  } else if (err instanceof Error) {
-                    setMessage(err.message)
-                  }
-                },
                 onSuccess: () => {
-                  setMessage('Account successfully created!')
                   setFormInput(formInitialState)
                 },
               }

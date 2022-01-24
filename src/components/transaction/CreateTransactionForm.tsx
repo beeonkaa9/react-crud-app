@@ -1,7 +1,6 @@
 import useCreateDepositMutation from 'hooks/transaction/useCreateDepositMutation'
 import useCreateTransferMutation from 'hooks/transaction/useCreateTransferMutation'
 import useCreateWithdrawalMutation from 'hooks/transaction/useCreateWithdrawalMutation'
-import { HTTPError } from 'ky'
 import React, { useEffect, useState } from 'react'
 import validateCreateTransaction from 'utils/validateCreateTransaction'
 import { TransactionType } from './Transaction'
@@ -35,9 +34,18 @@ const CreateTransactionForm = ({
     transferMoney.reset()
   }, [buttonClicked])
 
-  const addMoney = useCreateDepositMutation()
-  const withdrawMoney = useCreateWithdrawalMutation()
-  const transferMoney = useCreateTransferMutation()
+  const addMoney = useCreateDepositMutation({
+    setMessage,
+    successMessage: 'Deposit successfully submitted!',
+  })
+  const withdrawMoney = useCreateWithdrawalMutation({
+    setMessage,
+    successMessage: 'Withdrawal successfully submitted!',
+  })
+  const transferMoney = useCreateTransferMutation({
+    setMessage,
+    successMessage: 'Transfer successfully submitted!',
+  })
 
   return (
     <div className="TransactionForm">
@@ -115,16 +123,7 @@ const CreateTransactionForm = ({
                   currency: formInput.currency,
                 },
                 {
-                  onError: (err) => {
-                    if (err instanceof HTTPError) {
-                      const errorResponse = err.response.clone()
-                      errorResponse.json().then((e) => setMessage(e.message))
-                    } else if (err instanceof Error) {
-                      setMessage(err.message)
-                    }
-                  },
                   onSuccess: () => {
-                    setMessage('Deposit successfully submitted!')
                     setFormInput(formInitialState)
                   },
                 }
@@ -159,16 +158,7 @@ const CreateTransactionForm = ({
                   currency: formInput.currency,
                 },
                 {
-                  onError: (err) => {
-                    if (err instanceof HTTPError) {
-                      const errorResponse = err.response.clone()
-                      errorResponse.json().then((e) => setMessage(e.message))
-                    } else if (err instanceof Error) {
-                      setMessage(err.message)
-                    }
-                  },
                   onSuccess: () => {
-                    setMessage('Withdrawal successfully submitted!')
                     setFormInput(formInitialState)
                   },
                 }
@@ -204,16 +194,7 @@ const CreateTransactionForm = ({
                   currency: formInput.currency,
                 },
                 {
-                  onError: (err) => {
-                    if (err instanceof HTTPError) {
-                      const errorResponse = err.response.clone()
-                      errorResponse.json().then((e) => setMessage(e.message))
-                    } else if (err instanceof Error) {
-                      setMessage(err.message)
-                    }
-                  },
                   onSuccess: () => {
-                    setMessage('Transfer successfully submitted!')
                     setFormInput(formInitialState)
                   },
                 }

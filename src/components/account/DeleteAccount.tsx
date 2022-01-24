@@ -1,6 +1,5 @@
 import FormStatus from 'components/FormStatus'
 import useDeleteAccountMutation from 'hooks/account/useDeleteAccountMutation'
-import { HTTPError } from 'ky'
 import React, { useState } from 'react'
 import validateAccountId from 'utils/validateAccountId'
 
@@ -13,7 +12,10 @@ const DeleteAccount = () => {
     null
   )
 
-  const deleteAccount = useDeleteAccountMutation()
+  const deleteAccount = useDeleteAccountMutation({
+    setMessage,
+    successMessage: 'Account successfully deleted!',
+  })
 
   return (
     <div className="sectionContainer">
@@ -32,19 +34,22 @@ const DeleteAccount = () => {
             setValidationMessage(validateInput)
           } else {
             setValidationMessage(null)
-            deleteAccount.mutate(accountId, {
-              onError: (err) => {
-                if (err instanceof HTTPError) {
-                  const errorResponse = err.response.clone()
-                  errorResponse.json().then((e) => setMessage(e.message))
-                } else if (err instanceof Error) {
-                  setMessage(err.message)
-                }
-              },
-              onSuccess: () => {
-                setMessage('Account successfully deleted!')
-              },
-            })
+            deleteAccount.mutate(
+              accountId
+              //   {
+              //   onError: (err) => {
+              //     if (err instanceof HTTPError) {
+              //       const errorResponse = err.response.clone()
+              //       errorResponse.json().then((e) => setMessage(e.message))
+              //     } else if (err instanceof Error) {
+              //       setMessage(err.message)
+              //     }
+              //   },
+              //   onSuccess: () => {
+              //     setMessage('Account successfully deleted!')
+              //   },
+              // }
+            )
           }
         }}
       >

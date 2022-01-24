@@ -1,3 +1,4 @@
+import { HTTPError } from 'ky'
 import { useMutation } from 'react-query'
 import api from 'utils/api'
 
@@ -23,8 +24,26 @@ const withdrawMoney = (formInput: WithdrawMoneyFormInput) =>
     //201 HTTP code results in 'unexpected end of JSON input' error, so it must be text
     .text()
 
-const useCreateWithdrawalMutation = () => {
-  return useMutation(withdrawMoney)
+const useCreateWithdrawalMutation = ({
+  setMessage,
+  successMessage,
+}: {
+  setMessage?: React.Dispatch<React.SetStateAction<string | null>>
+  successMessage?: string
+}) => {
+  return useMutation(withdrawMoney, {
+    onError: (err) => {
+      if (err instanceof HTTPError) {
+        const errorResponse = err.response.clone()
+        if (setMessage) errorResponse.json().then((e) => setMessage(e.message))
+      } else if (err instanceof Error) {
+        if (setMessage) setMessage(err.message)
+      }
+    },
+    onSuccess: () => {
+      if (setMessage && successMessage) setMessage(successMessage)
+    },
+  })
 }
 
 export default useCreateWithdrawalMutation

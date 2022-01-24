@@ -1,3 +1,4 @@
+import { HTTPError } from 'ky'
 import { useMutation } from 'react-query'
 import api from 'utils/api'
 
@@ -28,8 +29,26 @@ const createAccount = (formInput: FormInput) =>
     })
     .text()
 
-const useCreateAccountMutation = () => {
-  return useMutation(createAccount)
+const useCreateAccountMutation = ({
+  setMessage,
+  successMessage,
+}: {
+  setMessage?: React.Dispatch<React.SetStateAction<string | null>>
+  successMessage?: string
+}) => {
+  return useMutation(createAccount, {
+    onError: (err) => {
+      if (err instanceof HTTPError) {
+        const errorResponse = err.response.clone()
+        if (setMessage) errorResponse.json().then((e) => setMessage(e.message))
+      } else if (err instanceof Error) {
+        if (setMessage) setMessage(err.message)
+      }
+    },
+    onSuccess: () => {
+      if (setMessage && successMessage) setMessage(successMessage)
+    },
+  })
 }
 
 export default useCreateAccountMutation
