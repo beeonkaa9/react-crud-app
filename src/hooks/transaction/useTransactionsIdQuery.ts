@@ -25,6 +25,9 @@ const useTransactionsIdQuery = (
           if (setErrorMessage) setErrorMessage(err.message)
         }
       },
+      onSuccess: () => {
+        if (setErrorMessage) setErrorMessage(null)
+      },
     }
   )
 }

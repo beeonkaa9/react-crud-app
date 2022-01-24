@@ -27,8 +27,6 @@ const GetAccountId = () => {
             //to prevent fetching/refetching with invalid uuid
             setSubmittedAccountId('')
           } else {
-            //must refetch, otherwise account does not show up if it is searched for
-            //first, created, then searched for again (would need to be manually refetched)
             setSubmittedAccountId(accountId)
             setErrorMessage(null)
           }
@@ -40,7 +38,7 @@ const GetAccountId = () => {
       <div className="requestStatus">
         {getAccountId.isLoading ? (
           <div className="loading">Please wait...</div>
-        ) : errorMessage != null ? (
+        ) : errorMessage !== null ? (
           <div className="error">An error occurred: {errorMessage}</div>
         ) : null}
       </div>

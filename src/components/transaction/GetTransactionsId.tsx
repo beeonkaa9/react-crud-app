@@ -32,9 +32,6 @@ const GetTransactionsId = () => {
               setSubmittedAccountId('')
             } else {
               setSubmittedAccountId(accountId)
-              //must refetch since transaction won't show up if it is searched for,
-              //created, then searched for again; stays stuck on
-              //"No transactions found" unless manually refetched
               setErrorMessage(null)
             }
           }}
@@ -45,7 +42,7 @@ const GetTransactionsId = () => {
         <div className="requestStatus">
           {getTransactionsForId.isLoading ? (
             <div className="loading">Please wait...</div>
-          ) : errorMessage != null ? (
+          ) : errorMessage !== null ? (
             <div className="error">An error occurred: {errorMessage}</div>
           ) : null}
         </div>

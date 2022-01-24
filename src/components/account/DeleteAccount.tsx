@@ -34,22 +34,7 @@ const DeleteAccount = () => {
             setValidationMessage(validateInput)
           } else {
             setValidationMessage(null)
-            deleteAccount.mutate(
-              accountId
-              //   {
-              //   onError: (err) => {
-              //     if (err instanceof HTTPError) {
-              //       const errorResponse = err.response.clone()
-              //       errorResponse.json().then((e) => setMessage(e.message))
-              //     } else if (err instanceof Error) {
-              //       setMessage(err.message)
-              //     }
-              //   },
-              //   onSuccess: () => {
-              //     setMessage('Account successfully deleted!')
-              //   },
-              // }
-            )
+            deleteAccount.mutate(accountId)
           }
         }}
       >
@@ -58,7 +43,7 @@ const DeleteAccount = () => {
 
       <div className="requestStatus">
         <FormStatus request={{ status: deleteAccount.status, message }} />
-        {validationMessage != null && (
+        {validationMessage !== null && (
           <div className="error">{validationMessage}</div>
         )}
       </div>

@@ -1,5 +1,5 @@
 import { HTTPError } from 'ky'
-import { useMutation } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import api from 'utils/api'
 
 type FormInput = {
@@ -36,6 +36,8 @@ const useCreateAccountMutation = ({
   setMessage?: React.Dispatch<React.SetStateAction<string | null>>
   successMessage?: string
 }) => {
+  const queryClient = useQueryClient()
+
   return useMutation(createAccount, {
     onError: (err) => {
       if (err instanceof HTTPError) {
@@ -45,7 +47,9 @@ const useCreateAccountMutation = ({
         if (setMessage) setMessage(err.message)
       }
     },
-    onSuccess: () => {
+    onSuccess: (_, formInput) => {
+      queryClient.invalidateQueries('accounts')
+      queryClient.invalidateQueries(['account', formInput.id])
       if (setMessage && successMessage) setMessage(successMessage)
     },
   })

@@ -21,7 +21,6 @@ const GetAllAccounts = () => {
         </div>
         <div>
           {getAllAccounts.isSuccess ? (
-            getAllAccounts.data !== undefined &&
             getAllAccounts.data.length === 0 ? (
               <h4>No accounts found</h4>
             ) : (

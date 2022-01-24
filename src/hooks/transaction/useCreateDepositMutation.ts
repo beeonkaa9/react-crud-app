@@ -1,5 +1,5 @@
 import { HTTPError } from 'ky'
-import { useMutation } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import api from 'utils/api'
 
 type AddMoneyFormInput = {
@@ -31,6 +31,8 @@ const useCreateDepositMutation = ({
   setMessage?: React.Dispatch<React.SetStateAction<string | null>>
   successMessage?: string
 }) => {
+  const queryClient = useQueryClient()
+
   return useMutation(addMoney, {
     onError: (err) => {
       if (err instanceof HTTPError) {
@@ -40,7 +42,9 @@ const useCreateDepositMutation = ({
         if (setMessage) setMessage(err.message)
       }
     },
-    onSuccess: () => {
+    onSuccess: (_, formInput) => {
+      queryClient.invalidateQueries('transactions')
+      queryClient.invalidateQueries(['transaction', formInput.id])
       if (setMessage && successMessage) setMessage(successMessage)
     },
   })
