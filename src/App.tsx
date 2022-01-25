@@ -12,14 +12,18 @@ function App() {
     <div className="App">
       <QueryClientProvider client={queryClient}>
         <header className="Header">
-          <div className="BankLogoContainer">
-            <img src={BankLogo} className="bankLogo" alt="logo" />
+          <img src={BankLogo} className="bankLogo" alt="logo" />
+          <div className="NavLinks">
+            <Link to="/account" className="HeaderLink">
+              Account Center
+            </Link>
+            <Link to="/transaction" className="HeaderLink">
+              Transactions
+            </Link>
+            <Link to="/about" className="HeaderLink">
+              About Us
+            </Link>
           </div>
-          <nav className="NavLinks">
-            <Link to="/account">Account Center</Link>
-            <Link to="/transaction">Transactions</Link>
-            <Link to="/about">About Us</Link>
-          </nav>
         </header>
         <Outlet />
         <ReactQueryDevtools initialIsOpen={false} />

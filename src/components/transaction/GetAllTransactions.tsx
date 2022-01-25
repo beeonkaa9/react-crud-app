@@ -25,9 +25,12 @@ const GetAllTransactions = () => {
       </div>
 
       <div>
-        {getAllTransactions.isSuccess ? (
-          <div>
-            {getAllTransactions.data?.map((transaction, i) => (
+        {getAllTransactions.isSuccess &&
+        getAllTransactions.isFetchedAfterMount ? (
+          getAllTransactions.data?.length === 0 ? (
+            <h4>No transactions found</h4>
+          ) : (
+            getAllTransactions.data?.map((transaction, i) => (
               <div key={i} className="singleTransaction">
                 <div>Id: {transaction?.id}</div>
                 <div>Note: {transaction?.note}</div>
@@ -37,12 +40,8 @@ const GetAllTransactions = () => {
                 <div>Amount: {transaction?.amount_money.amount}</div>
                 <div>{transaction?.amount_money.currency}</div>
               </div>
-            ))}
-          </div>
-        ) : null}
-        {getAllTransactions.data?.length === 0 &&
-        getAllTransactions.isSuccess ? (
-          <h4>No transactions found</h4>
+            ))
+          )
         ) : null}
       </div>
     </div>

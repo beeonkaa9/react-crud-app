@@ -20,7 +20,7 @@ const GetAllAccounts = () => {
           ) : null}
         </div>
         <div>
-          {getAllAccounts.isSuccess ? (
+          {getAllAccounts.isSuccess && getAllAccounts.isFetchedAfterMount ? (
             getAllAccounts.data.length === 0 ? (
               <h4>No accounts found</h4>
             ) : (
