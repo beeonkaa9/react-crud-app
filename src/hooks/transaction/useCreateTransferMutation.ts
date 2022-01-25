@@ -40,7 +40,7 @@ const useCreateTransferMutation = ({
     onSuccess: (_, formInput) => {
       queryClient.invalidateQueries('transactions')
       queryClient.invalidateQueries(['transaction', formInput.id])
-      if (setMessage) setMessage('Transfer successfully submitted!')
+      setMessage?.('Transfer successfully submitted!')
     },
   })
 }

@@ -20,7 +20,7 @@ const useTransactionsIdQuery = (
         if (setErrorMessage) handleAPIError(err, setErrorMessage)
       },
       onSuccess: () => {
-        if (setErrorMessage) setErrorMessage(null)
+        setErrorMessage?.(null)
       },
     }
   )

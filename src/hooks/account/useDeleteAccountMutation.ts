@@ -18,7 +18,7 @@ const useDeleteAccountMutation = ({
       if (setMessage) handleAPIError(err, setMessage)
     },
     onSuccess: () => {
-      if (setMessage) setMessage('Account successfully deleted!')
+      setMessage?.('Account successfully deleted!')
     },
   })
 }

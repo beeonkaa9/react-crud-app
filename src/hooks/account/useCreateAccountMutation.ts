@@ -43,7 +43,7 @@ const useCreateAccountMutation = ({
     onSuccess: (_, formInput) => {
       queryClient.invalidateQueries('accounts')
       queryClient.invalidateQueries(['account', formInput.id])
-      if (setMessage) setMessage('Account successfully created!')
+      setMessage?.('Account successfully created!')
     },
   })
 }

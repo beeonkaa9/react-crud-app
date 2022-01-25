@@ -38,7 +38,7 @@ const useCreateWithdrawalMutation = ({
     onSuccess: (_, formInput) => {
       queryClient.invalidateQueries('transactions')
       queryClient.invalidateQueries(['transaction', formInput.id])
-      if (setMessage) setMessage('Withdrawal successfully submitted!')
+      setMessage?.('Withdrawal successfully submitted!')
     },
   })
 }

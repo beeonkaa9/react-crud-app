@@ -38,7 +38,7 @@ const useCreateDepositMutation = ({
     onSuccess: (_, formInput) => {
       queryClient.invalidateQueries('transactions')
       queryClient.invalidateQueries(['transaction', formInput.id])
-      if (setMessage) setMessage('Deposit successfully submitted!')
+      setMessage?.('Deposit successfully submitted!')
     },
   })
 }
