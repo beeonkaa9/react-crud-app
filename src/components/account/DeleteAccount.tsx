@@ -43,13 +43,6 @@ const DeleteAccount = () => {
           <div className="error">{validationMessage}</div>
         )}
       </div>
-
-      <div className="STASHTEST">
-        <FormStatus request={{ status: deleteAccount.status, message }} />
-        {validationMessage !== null && (
-          <div className="error">{validationMessage}</div>
-        )}
-      </div>
     </div>
   )
 }
