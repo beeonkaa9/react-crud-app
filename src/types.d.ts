@@ -23,5 +23,3 @@ type TransactionResponse = {
   target_account_id?: string
   amount_money: TransactionAmount
 }
-
-type RequestStatusOptions = 'fetching' | 'success' | 'error' | 'idle'

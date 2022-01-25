@@ -1,17 +1,18 @@
 import FormStatus from 'components/FormStatus'
-import { HTTPError } from 'ky'
+import useDeleteAccountMutation from 'hooks/account/useDeleteAccountMutation'
 import React, { useState } from 'react'
-import api from 'utils/api'
 import validateAccountId from 'utils/validateAccountId'
 
 const DeleteAccount = () => {
   const [accountId, setAccountId] = useState('')
 
-  //for error and success messages
+  //for error and success messages from mutation
   const [message, setMessage] = useState<string | null>(null)
+  const [validationMessage, setValidationMessage] = useState<string | null>(
+    null
+  )
 
-  const [requestStatus, setRequestStatus] =
-    useState<RequestStatusOptions>('idle')
+  const deleteAccount = useDeleteAccountMutation({ setMessage })
 
   return (
     <div className="sectionContainer">
@@ -26,26 +27,10 @@ const DeleteAccount = () => {
         onClick={() => {
           const validateInput = validateAccountId(accountId)
           if (validateInput) {
-            setMessage(validateInput)
-            setRequestStatus('error')
+            setValidationMessage(validateInput)
           } else {
-            setRequestStatus('fetching')
-            api
-              .delete(`accounts/${accountId}`)
-              //200 HTTP code for delete results in 'unexpected end of JSON input' error, so it must be text
-              .text()
-              .then(() => {
-                setRequestStatus('success')
-                setMessage('Deletion successful!')
-                setAccountId('')
-              })
-              .catch((e) => {
-                setRequestStatus('error')
-                if (e instanceof HTTPError) {
-                  e.response.json().then((e) => setMessage(e.message))
-                }
-                setMessage(e.message)
-              })
+            setValidationMessage(null)
+            deleteAccount.mutate(accountId)
           }
         }}
       >
@@ -53,7 +38,10 @@ const DeleteAccount = () => {
       </button>
 
       <div className="requestStatus">
-        <FormStatus request={{ status: requestStatus, message }} />
+        <FormStatus request={{ status: deleteAccount.status, message }} />
+        {validationMessage !== null && (
+          <div className="error">{validationMessage}</div>
+        )}
       </div>
     </div>
   )

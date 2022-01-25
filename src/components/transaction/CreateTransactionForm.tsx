@@ -1,7 +1,7 @@
-import FormStatus from 'components/FormStatus'
-import { HTTPError } from 'ky'
+import useCreateDepositMutation from 'hooks/transaction/useCreateDepositMutation'
+import useCreateTransferMutation from 'hooks/transaction/useCreateTransferMutation'
+import useCreateWithdrawalMutation from 'hooks/transaction/useCreateWithdrawalMutation'
 import React, { useEffect, useState } from 'react'
-import api from 'utils/api'
 import validateCreateTransaction from 'utils/validateCreateTransaction'
 import { TransactionType } from './Transaction'
 
@@ -19,13 +19,8 @@ const CreateTransactionForm = ({
   buttonClicked: Exclude<TransactionType, 'none'>
 }) => {
   const [formInput, setFormInput] = useState(formInitialState)
-
-  const [requestStatus, setRequestStatus] =
-    useState<RequestStatusOptions>('idle')
-
   //for error and success messages
   const [message, setMessage] = useState<string | null>(null)
-
   const [formValidationErrors, setFormValidationErrors] = useState<
     string[] | null
   >(null)
@@ -33,9 +28,15 @@ const CreateTransactionForm = ({
   //since all the transactions share one form, it must be reset before doing another form (ex. withdraw then add)
   useEffect(() => {
     setFormInput(formInitialState)
-    setRequestStatus('idle')
     setFormValidationErrors(null)
+    addMoney.reset()
+    withdrawMoney.reset()
+    transferMoney.reset()
   }, [buttonClicked])
+
+  const addMoney = useCreateDepositMutation({ setMessage })
+  const withdrawMoney = useCreateWithdrawalMutation({ setMessage })
+  const transferMoney = useCreateTransferMutation({ setMessage })
 
   return (
     <div className="TransactionForm">
@@ -104,32 +105,19 @@ const CreateTransactionForm = ({
               setFormValidationErrors(validationErrors)
             } else {
               setFormValidationErrors(null)
-              setRequestStatus('fetching')
-              api
-                .post(`accounts/${formInput.id}/transactions/add`, {
-                  json: {
-                    id: formInput.id,
-                    note: formInput.note,
-                    amount_money: {
-                      amount: parseInt(formInput.amount),
-                      currency: formInput.currency,
-                    },
+              addMoney.mutate(
+                {
+                  id: formInput.id,
+                  note: formInput.note,
+                  amount: formInput.amount,
+                  currency: formInput.currency,
+                },
+                {
+                  onSuccess: () => {
+                    setFormInput(formInitialState)
                   },
-                })
-                //201 HTTP code results in 'unexpected end of JSON input' error, so it must be text
-                .text()
-                .then(() => {
-                  setRequestStatus('success')
-                  setFormInput(formInitialState)
-                  setMessage('Transaction successfully submitted!')
-                })
-                .catch((e) => {
-                  setRequestStatus('error')
-                  if (e instanceof HTTPError) {
-                    e.response.json().then((e) => setMessage(e.message))
-                  }
-                  setMessage(e.message)
-                })
+                }
+              )
             }
           }}
         >
@@ -151,32 +139,19 @@ const CreateTransactionForm = ({
               setFormValidationErrors(validationErrors)
             } else {
               setFormValidationErrors(null)
-              setRequestStatus('fetching')
-              api
-                .post(`accounts/${formInput.id}/transactions/withdraw`, {
-                  json: {
-                    id: formInput.id,
-                    note: formInput.note,
-                    amount_money: {
-                      amount: parseInt(formInput.amount),
-                      currency: formInput.currency,
-                    },
+              withdrawMoney.mutate(
+                {
+                  id: formInput.id,
+                  note: formInput.note,
+                  amount: formInput.amount,
+                  currency: formInput.currency,
+                },
+                {
+                  onSuccess: () => {
+                    setFormInput(formInitialState)
                   },
-                })
-                //201 HTTP code results in 'unexpected end of JSON input' error, so it must be text
-                .text()
-                .then(() => {
-                  setRequestStatus('success')
-                  setFormInput(formInitialState)
-                  setMessage('Transaction successfully submitted!')
-                })
-                .catch((e) => {
-                  setRequestStatus('error')
-                  if (e instanceof HTTPError) {
-                    e.response.json().then((e) => setMessage(e.message))
-                  }
-                  setMessage(e.message)
-                })
+                }
+              )
             }
           }}
         >
@@ -198,33 +173,20 @@ const CreateTransactionForm = ({
               setFormValidationErrors(validationErrors)
             } else {
               setFormValidationErrors(null)
-              setRequestStatus('fetching')
-              api
-                .post(`accounts/${formInput.id}/transactions/send`, {
-                  json: {
-                    id: formInput.id,
-                    note: formInput.note,
-                    target_account_id: formInput.targetAccount,
-                    amount_money: {
-                      amount: parseInt(formInput.amount),
-                      currency: formInput.currency,
-                    },
+              transferMoney.mutate(
+                {
+                  id: formInput.id,
+                  note: formInput.note,
+                  targetAccount: formInput.targetAccount,
+                  amount: formInput.amount,
+                  currency: formInput.currency,
+                },
+                {
+                  onSuccess: () => {
+                    setFormInput(formInitialState)
                   },
-                })
-                //201 HTTP code results in 'unexpected end of JSON input' error, so it must be text
-                .text()
-                .then(() => {
-                  setRequestStatus('success')
-                  setFormInput(formInitialState)
-                  setMessage('Transaction successfully submitted!')
-                })
-                .catch((e) => {
-                  setRequestStatus('error')
-                  if (e instanceof HTTPError) {
-                    e.response.json().then((e) => setMessage(e.message))
-                  }
-                  setMessage(e.message)
-                })
+                }
+              )
             }
           }}
         >
@@ -233,10 +195,29 @@ const CreateTransactionForm = ({
       ) : null}
 
       <div className="transactionFormStatus">
-        <FormStatus
-          request={{ status: requestStatus, message }}
-          validationErrors={formValidationErrors}
-        />
+        {(addMoney.isLoading ||
+          withdrawMoney.isLoading ||
+          transferMoney.isLoading) && (
+          <div className="loading">Please wait...</div>
+        )}
+        {(addMoney.isSuccess ||
+          withdrawMoney.isSuccess ||
+          transferMoney.isSuccess) && <div className="success">{message}</div>}
+
+        {(addMoney.isError ||
+          withdrawMoney.isError ||
+          transferMoney.isError) && (
+          <div className="error">An error occurred: {message}</div>
+        )}
+        {formValidationErrors ? (
+          <>
+            {formValidationErrors.map((error, i) => (
+              <div key={i} className="formErrors">
+                <div>{error}</div>
+              </div>
+            ))}
+          </>
+        ) : null}
       </div>
     </div>
   )

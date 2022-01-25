@@ -10,20 +10,27 @@
   height: 100px;
 }
 
+.BankLogoContainer {
+  display: flex;
+  height: inherit;
+  width: 50%;
+}
+
 .bankLogo {
-  width: 500px;
+  width: 50%;
 }
 
 .NavLinks {
   display: flex;
-  padding-top: 30px;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
 }
 
-a {
+.HeaderLink {
   color: white;
-  font-size: 20px;
+  font-size: x-large;
   text-decoration: none;
-  padding: 0 35px;
 }
 
 button {

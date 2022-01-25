@@ -1,8 +1,7 @@
-import FormStatus from 'components/FormStatus'
 import React, { useState } from 'react'
 import validateCreateAccount from 'utils/validateCreateAccount'
-import { HTTPError } from 'ky'
-import api from 'utils/api'
+import useCreateAccountMutation from 'hooks/account/useCreateAccountMutation'
+import FormStatus from 'components/FormStatus'
 
 const formInitialState = {
   id: '',
@@ -17,15 +16,13 @@ const formInitialState = {
 const CreateAccount = () => {
   const [formInput, setFormInput] = useState(formInitialState)
 
-  const [requestStatus, setRequestStatus] =
-    useState<RequestStatusOptions>('idle')
-
   //for error and success messages
   const [message, setMessage] = useState<string | null>(null)
-
   const [formValidationErrors, setFormValidationErrors] = useState<
     string[] | null
   >(null)
+
+  const createAccount = useCreateAccountMutation({ setMessage })
 
   return (
     <div className="CreateAccount">
@@ -110,35 +107,22 @@ const CreateAccount = () => {
             setFormValidationErrors(validationErrors)
           } else {
             setFormValidationErrors(null)
-            setRequestStatus('fetching')
-            api
-              .post('accounts', {
-                json: {
-                  given_name: formInput.firstName,
-                  family_name: formInput.lastName,
-                  email_address: formInput.email,
-                  id: formInput.id,
-                  balance: {
-                    amount: parseInt(formInput.amount),
-                    currency: formInput.currency,
-                  },
-                  note: formInput.note,
+            createAccount.mutate(
+              {
+                firstName: formInput.firstName,
+                lastName: formInput.lastName,
+                email: formInput.email,
+                id: formInput.id,
+                amount: formInput.amount,
+                currency: formInput.currency,
+                note: formInput.note,
+              },
+              {
+                onSuccess: () => {
+                  setFormInput(formInitialState)
                 },
-              })
-              //201 HTTP code results in 'unexpected end of JSON input' error, so it must be text
-              .text()
-              .then(() => {
-                setRequestStatus('success')
-                setFormInput(formInitialState)
-                setMessage('Account successfully created!')
-              })
-              .catch((e) => {
-                setRequestStatus('error')
-                if (e instanceof HTTPError) {
-                  e.response.json().then((e) => setMessage(e.message))
-                }
-                setMessage(e.message)
-              })
+              }
+            )
           }
         }}
       >
@@ -147,7 +131,7 @@ const CreateAccount = () => {
 
       <div className="requestStatus">
         <FormStatus
-          request={{ status: requestStatus, message }}
+          request={{ status: createAccount.status, message }}
           validationErrors={formValidationErrors}
         />
       </div>
