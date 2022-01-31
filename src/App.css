@@ -100,10 +100,6 @@ input {
   margin-top: 25px;
 }
 
-.formErrors {
-  color: rgb(189, 48, 48);
-}
-
 .success {
   color: green;
 }
@@ -161,4 +157,15 @@ input {
 
 .loading {
   font-weight: 15px;
+}
+
+.formLabel {
+  font-size: 20px;
+}
+
+.formValidationError {
+  font-size: 15px;
+  padding-left: 35px;
+  color: rgb(189, 48, 48);
+  margin-right: 50px;
 }
