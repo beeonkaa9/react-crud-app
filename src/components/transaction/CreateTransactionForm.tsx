@@ -2,15 +2,18 @@ import useCreateDepositMutation from 'hooks/transaction/useCreateDepositMutation
 import useCreateTransferMutation from 'hooks/transaction/useCreateTransferMutation'
 import useCreateWithdrawalMutation from 'hooks/transaction/useCreateWithdrawalMutation'
 import React, { useEffect, useState } from 'react'
-import validateCreateTransaction from 'utils/validateCreateTransaction'
+import { useForm } from 'react-hook-form'
 import { TransactionType } from './Transaction'
 
-const formInitialState = {
-  id: '',
-  note: '',
-  targetAccount: '',
-  amount: '',
-  currency: '',
+type FormData = {
+  id: string
+  firstName: string
+  lastName: string
+  targetId?: string
+  email: string
+  amount: string
+  currency: string
+  note: string
 }
 
 const CreateTransactionForm = ({
@@ -18,7 +21,6 @@ const CreateTransactionForm = ({
 }: {
   buttonClicked: Exclude<TransactionType, 'none'>
 }) => {
-  const [formInput, setFormInput] = useState(formInitialState)
   //for error and success messages
   const [message, setMessage] = useState<string | null>(null)
   const [formValidationErrors, setFormValidationErrors] = useState<
@@ -27,7 +29,7 @@ const CreateTransactionForm = ({
 
   //since all the transactions share one form, it must be reset before doing another form (ex. withdraw then add)
   useEffect(() => {
-    setFormInput(formInitialState)
+    reset()
     setFormValidationErrors(null)
     addMoney.reset()
     withdrawMoney.reset()
@@ -38,83 +40,115 @@ const CreateTransactionForm = ({
   const withdrawMoney = useCreateWithdrawalMutation({ setMessage })
   const transferMoney = useCreateTransferMutation({ setMessage })
 
+  const {
+    register,
+    reset,
+    getValues,
+    formState: { errors, isValid },
+  } = useForm<FormData>({
+    mode: 'onBlur',
+  })
+  const values = getValues()
+
   return (
     <div className="TransactionForm">
       <form className="transactionCreationForm">
         <label>Account Id</label>
         <input
-          type="text"
-          value={formInput.id}
-          placeholder="9e28507a-632f-44a6-99a7-98695cf2adcf"
-          onChange={(e) => setFormInput({ ...formInput, id: e.target.value })}
-        ></input>
+          {...register('id', {
+            required: 'Account id is required',
+            pattern: {
+              value:
+                /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/i,
+              message: 'Account id must be UUID',
+            },
+          })}
+          placeholder="914e8480-263e-4f99-8ce5-6e0a0f3621a7"
+        />
+        {errors.id && (
+          <div className="formValidationError">{errors.id.message}</div>
+        )}
 
         <label>Note</label>
         <input
-          type="text"
-          value={formInput.note}
-          placeholder="rent money"
-          onChange={(e) => setFormInput({ ...formInput, note: e.target.value })}
-        ></input>
+          {...register('note', { required: 'Note is required' })}
+          placeholder="savings account"
+        />
+        {errors.note && (
+          <div className="formValidationError">{errors.note.message}</div>
+        )}
+
         {buttonClicked === 'send' ? (
           <>
             <label>Account to send money to</label>
             <input
-              type="text"
-              value={formInput.targetAccount}
-              placeholder="ccc3a91d-449c-41ff-a6fe-d79001431e4f"
-              onChange={(e) =>
-                setFormInput({ ...formInput, targetAccount: e.target.value })
-              }
-            ></input>
+              {...register('targetId', {
+                required: 'Account id is required',
+                pattern: {
+                  value:
+                    /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/i,
+                  message: 'Target account id must be UUID',
+                },
+              })}
+              placeholder="914e8480-263e-4f99-8ce5-6e0a0f3621a7"
+            />
+            {errors.targetId && (
+              <div className="formValidationError">
+                {errors.targetId.message}
+              </div>
+            )}
           </>
         ) : null}
 
         <label>Amount</label>
         <input
-          type="text"
-          value={formInput.amount}
-          placeholder="300"
-          onChange={(e) =>
-            setFormInput({ ...formInput, amount: e.target.value })
-          }
-        ></input>
+          {...register('amount', {
+            required: 'Amount is required',
+            pattern: {
+              value: /^[0-9]+$/,
+              message: 'Amount must be a number',
+            },
+            min: {
+              value: 1,
+              message: 'Amount must be more than 0',
+            },
+          })}
+          placeholder="399"
+        />
+        {errors.amount && (
+          <div className="formValidationError">{errors.amount.message}</div>
+        )}
 
         <label>Currency</label>
         <input
-          type="text"
-          value={formInput.currency}
+          {...register('currency', {
+            required: 'Currency is required',
+            pattern: {
+              value: /^[a-zA-Z]+$/,
+              message: 'Currency must only contain letters',
+            },
+          })}
           placeholder="USD"
-          onChange={(e) =>
-            setFormInput({ ...formInput, currency: e.target.value })
-          }
-        ></input>
+        />
+        {errors.currency && (
+          <div className="formValidationError">{errors.currency.message}</div>
+        )}
       </form>
 
       {buttonClicked === 'add' ? (
         <button
           onClick={() => {
-            const validateForm = validateCreateTransaction(
-              formInput,
-              buttonClicked
-            )
-            const validationErrors = Object.values(validateForm).filter(
-              (error) => error !== ''
-            )
-            if (validationErrors.length !== 0) {
-              setFormValidationErrors(validationErrors)
-            } else {
-              setFormValidationErrors(null)
+            if (isValid) {
               addMoney.mutate(
                 {
-                  id: formInput.id,
-                  note: formInput.note,
-                  amount: formInput.amount,
-                  currency: formInput.currency,
+                  id: values.id,
+                  note: values.note,
+                  amount: values.amount,
+                  currency: values.currency,
                 },
                 {
                   onSuccess: () => {
-                    setFormInput(formInitialState)
+                    reset()
                   },
                 }
               )
@@ -128,27 +162,17 @@ const CreateTransactionForm = ({
       {buttonClicked === 'withdraw' ? (
         <button
           onClick={() => {
-            const validateForm = validateCreateTransaction(
-              formInput,
-              buttonClicked
-            )
-            const validationErrors = Object.values(validateForm).filter(
-              (error) => error !== ''
-            )
-            if (validationErrors.length !== 0) {
-              setFormValidationErrors(validationErrors)
-            } else {
-              setFormValidationErrors(null)
+            if (isValid) {
               withdrawMoney.mutate(
                 {
-                  id: formInput.id,
-                  note: formInput.note,
-                  amount: formInput.amount,
-                  currency: formInput.currency,
+                  id: values.id,
+                  note: values.note,
+                  amount: values.amount,
+                  currency: values.currency,
                 },
                 {
                   onSuccess: () => {
-                    setFormInput(formInitialState)
+                    reset()
                   },
                 }
               )
@@ -162,28 +186,18 @@ const CreateTransactionForm = ({
       {buttonClicked === 'send' ? (
         <button
           onClick={() => {
-            const validateForm = validateCreateTransaction(
-              formInput,
-              buttonClicked
-            )
-            const validationErrors = Object.values(validateForm).filter(
-              (error) => error !== ''
-            )
-            if (validationErrors.length !== 0) {
-              setFormValidationErrors(validationErrors)
-            } else {
-              setFormValidationErrors(null)
+            if (isValid && values.targetId) {
               transferMoney.mutate(
                 {
-                  id: formInput.id,
-                  note: formInput.note,
-                  targetAccount: formInput.targetAccount,
-                  amount: formInput.amount,
-                  currency: formInput.currency,
+                  id: values.id,
+                  note: values.note,
+                  targetAccount: values.targetId,
+                  amount: values.amount,
+                  currency: values.currency,
                 },
                 {
                   onSuccess: () => {
-                    setFormInput(formInitialState)
+                    reset()
                   },
                 }
               )
